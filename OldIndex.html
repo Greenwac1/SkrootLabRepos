@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Skroot Labs</title>
+
+    <!-- Javascript SDKs-->
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-auth-js@1.3.3/dist/amazon-cognito-auth.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@4.3.3/dist/amazon-cognito-identity.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.js"></script>
+
+    <style type="text/css">
+        * {
+            font-family: Arial;
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+            background-color: white;
+            width: 1000px;
+            margin: auto;
+        }
+
+        .required-field::after {
+            content: "*";
+            color: red;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 70px;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .myForm div {
+            width: 47%;
+            margin: 0;
+            padding: 0;
+            float: left;
+        }
+
+        .myForm div label {
+            display: block;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+            .sidenav a {
+                font-size: 18px;
+            }
+        }
+    </style>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id="registerView">
+        <h1>Register For An Account</h1>
+        <input id="emailInput" type="text" placeholder="Email" /></br>
+        <input id="newUsernameInput" type="text" placeholder="Username" /></br>
+        <input id="newPasswordInput" type="password" placeholder="Password" /></br>
+        <input id="confirmPasswordInput" type="password" placeholder="Confirm Password" /></br>
+
+        <input id="registerButton" type="button" value="Register" onclick="register()">
+        <input id="switchToSignIn" type="Button" value="or sign in" onclick="switchToSignInView()">
+    </div>
+
+    <div id="verificationView">
+        <h1>Verify Your Account</h1>
+        <input id="verificationCodeInput" type="text" placeholder="Verification Code" /></br>
+        <input id="verifyCodeButton" type="button" value="Verify" onclick="verifyCode()">
+    </div>
+
+    <div id="signInView">
+        <h1>Sign In</h1>
+        <input id="usernameInput" type="text" placeholder="Username" /></br>
+        <input id="passwordInput" type="password" placeholder="Password" /></br>
+        <input id="logInButton" type="Button" value="Log In" onclick="logIn()">
+        <input id="switchToRegister" type="Button" value="or register an account" onclick="switchToRegisterView()">
+    </div>
+
+
+
+
+    <div id="loggedInView">
+        <h1 style="color: royalblue">Sensor Results</h1>
+        <div style="float: left">
+            <label for="sensorIdInput" class="required-field">Reader ID</label></br>
+            <input id="sensorIdInput" size=30 type="text" name="SensorID" placeholder="12BE34" />
+        </div>
+        <div style="float: left">
+            <label for="startTimeInput">Start Date</label><br>
+            <input id="startTimeInput" size=30 type="text" placeholder="yyyy-mm-dd" />
+        </div>
+        <div style="float: left">
+            <label for="stopTimeInput">Stop Date</label><br>
+            <input id="stopTimeInput" size=30 type="text" placeholder="yyyy-mm-dd" />
+        </div>
+        <div style="float:left; padding-top:30px">
+            <input id="accessDataButton" size=15 type="Button" value="Search" onclick="accessData()" style="display:none">
+        </div>
+        <div style="float:left; line-height: 20px">
+            <input id="logOutButton" type="Button" value="Log Out" onclick="logOut()">
+        </div>
+        <div id="userOutput" style="width: 820px; height: 50px; float: left; margin-top: 20px"></div>
+    </div>
+
+
+
+    <span style="font-size:30px;cursor:pointer; color: royalblue" onclick="openNav()">&#9776; Sensor Navigation</span>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    </div>
+    <script>
+        /*
+            This is code adapted from this blog post:
+            https://auxenta.com/blog_User_Authentication_and_Authorization_with_AWS_Cognito.php
+
+            Primarily designed and written by Suminda De Silva
+            Reframed by Adam Rice for Skroot Labs Inc.
+            */
+
+
+        // AWS IDs
+        // var userPoolId = 'us-east-2_2Yp5dOApk';
+        // var clientId = '6cbstoshp6a3r66vghh593c0b';
+        // var region = 'us-east-2';
+        // var identityPoolId = 'us-east-2:0c3799ba-af33-4541-b3db-e5e9fb509877';
+
+        var userPoolId = 'us-east-2_GfASc6bnY';
+        var clientId = '1t46ujgd3tl59vtutuvkmnah53';
+        var region = 'us-east-2';
+        var identityPoolId = 'us-east-2:d1ff2dd9-319a-4a15-af35-c60b1e0f088a';
+
+        // other variables
+        var cognitoUser;
+        var idToken;
+        var userPool;
+
+        // cognito user pool data object
+        var poolData = {
+            UserPoolId: userPoolId,
+            ClientId: clientId
+        };
+
+
+        var docClient;
+        var tableName = "SkrootSensorTables";
+        var tableNamesStored;
+        var readingsBeingDisplayed;
+        var timesBeingDisplayed;
+        var displayChart;
+
+        switchToRegisterView();
+        getCurrentLoggedInSession();
+
+        function hideAll() {
+            tellUser("");
+            $("#registerView").hide();
+            $("#verificationView").hide();
+            $("#signInView").hide();
+            $("#loggedInView").hide();
+            clearChart(displayChart);
+        }
+
+        function switchToSignInView() {
+            hideAll();
+            $("#signInView").show();
+        }
+
+        function switchToRegisterView() {
+            hideAll();
+            $("#registerView").show();
+        }
+
+        function switchToVerificationView() {
+            hideAll();
+            $("#verificationView").show();
+        }
+
+        function switchToLoggedInView() {
+            hideAll();
+            $("#loggedInView").show();
+
+            docClient = new AWS.DynamoDB.DocumentClient();
+        }
+
+
+        /// LOG IN AND OUT ///
+
+        function logOut() {
+            if (cognitoUser != null) {
+                switchToSignInView();
+                cognitoUser.signOut();
+                tellUser('Logged out!');
+            }
+        }
+
+        function logIn() {
+
+            if (!$('#usernameInput').val() || !$('#passwordInput').val()) {
+                tellUser('Please enter Username and Password!');
+            } else {
+                tellUser("Logging in...");
+                var authenticationData = {
+                    Username: $('#usernameInput').val(),
+                    Password: $("#passwordInput").val(),
+                };
+                var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+
+                var userData = {
+                    Username: $('#usernameInput').val(),
+                    Pool: userPool
+                };
+                cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+                cognitoUser.authenticateUser(authenticationDetails, {
+                    onSuccess: function(result) {
+                        tellUser('Logged in!');
+
+                        $("#accessDataButton").hide();
+                        switchToLoggedInView();
+
+                        idToken = result.getIdToken().getJwtToken();
+                        getCognitoIdentityCredentials();
+                    },
+
+                    onFailure: function(err) {
+                        tellUser(err.message);
+                    },
+
+                });
+            }
+        }
+
+
+        // If user has logged in before, get the previous session so user doesn't need to log in again.
+        function getCurrentLoggedInSession() {
+
+            tellUser("Loading...");
+            userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+            cognitoUser = userPool.getCurrentUser();
+
+            if (cognitoUser != null) {
+                cognitoUser.getSession(function(err, session) {
+                    if (err) {
+                        tellUser(err.message);
+                    } else {
+                        tellUser('Logged in.');
+                        idToken = session.getIdToken().getJwtToken();
+                        switchToLoggedInView();
+                        getCognitoIdentityCredentials();
+                    }
+                });
+            } else {
+                switchToSignInView();
+            }
+
+        }
+
+        /// REGISTER USER ///
+        // Starting point for user registration flow with input validation
+        function register() {
+
+            switchToRegisterView();
+
+            if (!$('#emailInput').val() || !$('#newUsernameInput').val() || !$('#newPasswordInput').val() || !$('#confirmPasswordInput').val()) {
+                tellUser('Please fill all the fields!');
+            } else {
+                if ($('#newPasswordInput').val() == $('#confirmPasswordInput').val()) {
+                    registerUser($('#emailInput').val(), $('#newUsernameInput').val(), $('#newPasswordInput').val());
+                } else {
+                    tellUser('Confirm password failed!');
+                }
+
+            }
+        }
+
+        // Starting point for user verification using AWS Cognito with input validation
+        function verifyCode() {
+            if (!$('#verificationCodeInput').val()) {
+                tellUser('Please enter verification field!');
+            } else {
+                cognitoUser.confirmRegistration($('#verificationCodeInput').val(), true, function(err, result) {
+                    if (err) {
+                        tellUser(err.message);
+                    } else {
+                        tellUser('Successfully verified code!');
+                        switchToSignInView();
+                    }
+
+                });
+            }
+        }
+
+        // User registration using AWS Cognito
+        function registerUser(email, username, password) {
+            var attributeList = [];
+
+            var dataEmail = {
+                Name: 'email',
+                Value: email
+            };
+
+            var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+
+            attributeList.push(attributeEmail);
+
+            userPool.signUp(username, password, attributeList, null, function(err, result) {
+                if (err) {
+                    tellUser(err.message);
+                } else {
+                    cognitoUser = result.user;
+                    tellUser('Registration Successful!');
+                    tellUser('Username is: ' + cognitoUser.getUsername());
+                    tellUser('Please enter the verification code sent to your Email.');
+                    switchToVerificationView();
+                }
+            });
+        }
+
+
+
+        /// GETTING CREDENTIALS ///
+        // This method will get temporary credentials for AWS using the IdentityPoolId and the Id Token recieved from AWS Cognito authentication provider.
+        function getCognitoIdentityCredentials() {
+
+            AWS.config.region = region;
+
+            var loginMap = {};
+            loginMap['cognito-idp.' + region + '.amazonaws.com/' + userPoolId] = idToken;
+
+            AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                IdentityPoolId: identityPoolId,
+                Logins: loginMap
+            });
+
+            AWS.config.credentials.clearCachedId();
+
+            AWS.config.credentials.get(function(err) {
+                if (err) {
+                    tellUser(err.message);
+                } else {
+                    // Access Keys have now been granted
+                    // console.log('AWS Access Key: '+ AWS.config.credentials.accessKeyId);
+                    // console.log('AWS Secret Key: '+ AWS.config.credentials.secretAccessKey);
+                    // console.log('AWS Session Token: '+ AWS.config.credentials.sessionToken);
+                    switchToLoggedInView();
+                    SignedIn(StartTime, StopTime, Sensor);
+                    scanAndStoreAllTableNames();
+                }
+            });
+        }
+
+        /// ACCESSING DYNAMODB ///
+        // as soon as the user has logged in, scans all data table names
+
+        function scanAndStoreAllTableNames() {
+            console.log("Scanning all table names...");
+            var params = {
+                TableName: tableName
+            }
+
+            docClient.scan(params, function(err, data) {
+                if (err) {
+                    console.log(err);
+                    tellUser("There was an error accessing the database.")
+                } else {
+                    console.log("Success.");
+                    tableNamesStored = data;
+                    $("#accessDataButton").show();
+                    tellUser("Connection established!");
+                }
+            });
+        }
+
+        // access data button; beginning of the flow to graph the data
+        function accessData() {
+            deleteOldCharts()
+            deleteOldButtons()
+            //var tableName = "SkrootSensorTables";
+            var sensorID = $("#sensorIdInput").val();
+            //var StartTime = parseInt($("#startTimeInput").val());
+            var TimeStart = $("#startTimeInput").val() + " 00:00:00 UTC"
+            var TimeStop = $("#stopTimeInput").val() + " 00:00:00 UTC"
+            var getEpochMillis = function(dateStr) {
+                var r = /^\s*(\d{4})-(\d\d)-(\d\d)\s+(\d\d):(\d\d):(\d\d)\s+UTC\s*$/,
+                    m = ("" + dateStr).match(r);
+                return (m) ? Date.UTC(m[1], m[2] - 1, m[3], m[4], m[5], m[6]) : undefined;
+            };
+            StartTimes = getEpochMillis(TimeStart) / 1000
+            StopTimes = getEpochMillis(TimeStop) / 1000
+            if ($("#startTimeInput").val() == "" && $("#stopTimeInput").val() == "") {
+                i = Sensor.indexOf(sensorID)
+                var StopTimes = StopTime[i]
+                var StartTimes = StartTime[i]
+            } else if ($("#stopTimeInput").val() == "") {
+                var StopTimes = StartTimes
+            } else {
+                var StopTimes = parseInt($("#stopTimeInput").val());
+            }
+
+            if (Number.isInteger(StartTimes) && Number.isInteger(StopTimes) && sensorID != "") {
+                tellUser("Loading...");
+                RunningTests2(StartTimes, StopTimes, sensorID)
+            } else {
+                tellUser("Please enter valid values");
+            }
+        }
+
+        function deleteOldButtons() {
+            buttonIdentity.forEach(deleteExtraButtons);
+        }
+
+        function deleteExtraButtons(button) {
+            document.getElementById(button).remove();
+            buttonIdentity = []
+
+        }
+
+        function deleteOldCharts() {
+            Charts.forEach(deleteExtra);
+            Canvases.forEach(deleteCanvas);
+        }
+
+        function deleteExtra(Chart) {
+            Chart.destroy()
+            Charts = []
+        }
+
+        function deleteCanvas(Canvas) {
+            Canvas.remove()
+            Canvases = []
+        }
+
+        function RunningTests2(StartTime, StopTime, Sensor) {
+            for (var i = StartTime; i <= StopTime; i += 86400) { //86400 sec per day
+                var Time = i
+                var ChartName = parseInt((Math.random() * 1000000), 10)
+
+                try {
+                    queryAndChartTableName2(Sensor, Time, ChartName)
+                } catch (err) {
+                    document.getElementById("demo").innerHTML = err.message;
+                    console.log("What?!?!")
+                }
+            }
+        }
+
+        function queryAndChartTableName2(sensorID, date, chartID) {
+            var docClient = new AWS.DynamoDB.DocumentClient();
+            var table;
+            var tableName = "SkrootSensorTables";
+            var params = {
+                TableName: tableName,
+                KeyConditionExpression: "SensorID = :sid and #tim = :dat",
+                ExpressionAttributeNames: {
+                    "#tim": "Timestamp"
+                },
+                ExpressionAttributeValues: {
+                    ":sid": sensorID,
+                    ":dat": date
+                }
+            };
+            console.log(params)
+            docClient.query(params, function(err, data) {
+                if (err) {
+                    console.log(JSON.stringify(err, undefined, 2));
+                } else {
+                    //console.log(JSON.stringify(data, undefined, 2));
+                    DataSetsFound = Object.keys(data).length / 3;
+                    console.log(DataSetsFound)
+                    for (i = 1; i <= DataSetsFound; i++) {
+                        if (i > 1) {
+                            chart2(data, parseInt((Math.random() * 1000000), 10), date);
+                        } else {
+                            chart2(data, chartID, date);
+                        }
+                    }
+                }
+            });
+        }
+
+        function chart2(data, chartID, date) {
+            table = data;
+            try {
+                tableNames = table["Items"][0]["TableName"];
+                SensorID = table["Items"][0]["SensorID"];
+                queryAndChartData2(tableNames, SensorID, chartID, date);
+            } catch (err) {
+                throw "Exit Error";
+            }
+        }
+
+        function queryAndChartData2(tableName, sensorID, chartID, date) {
+            var d = new Date(0);
+            d.setUTCSeconds(date)
+            dates = d.toString()
+            var chartID = parseInt((Math.random() * 1000000), 10)
+            date = dates.substring(0, 15)
+            var params = {
+                TableName: tableName
+            };
+
+            docClient.scan(params, function(err, data) {
+                if (err) {
+                    console.log(JSON.stringify(err, undefined, 2));
+                } else {
+                    //console.log(JSON.stringify(data, undefined, 2));
+
+                    // refine the data to chart it
+                    times = [];
+                    for (var i = 0; i < data["Items"].length; i++) {
+                        var t = data["Items"][i]["Timestamp"];
+                        var t2 = t.toFixed(3)
+                        times.push(t2);
+                    }
+
+                    readings = [];
+                    for (var i = 0; i < data["Items"].length; i++) {
+                        var r = data["Items"][i]["Reading"];
+                        var r2 = r.toFixed(3)
+                        readings.push(r2);
+                    }
+                    var canvas = document.createElement('canvas');
+                    canvas.id = chartID;
+                    //var body2 = document.getElementsByTagName("h1")[0];
+                    var body2 = document.getElementById("loggedInView")
+                    body2.appendChild(canvas);
+                    Canvases.push(canvas)
+                    if (Canvases.length == 1) {
+                        TopPad = 0
+                    } else {
+                        TopPad = 50
+                    }
+                    var ctx1 = document.getElementById(chartID).getContext('2d');
+                    var chart = new Chart(ctx1, {
+                        type: 'line',
+                        data: {
+                            labels: times,
+                            datasets: [{
+                                data: readings,
+                                backgroundColor: 'rgba(0, 200, 255, 0.2)',
+                                borderColor: 'rgba(0, 200, 255, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            layout: {
+                                padding: {
+                                    left: 0,
+                                    right: 0,
+                                    top: TopPad,
+                                    bottom: 0
+                                },
+                            },
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        fontSize: 20,
+                                        labelString: "Frequency (MHz)"
+                                    },
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        fontSize: 20,
+                                        labelString: "Time (hours)"
+                                    },
+                                }]
+                            },
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: "SensorID: " + sensorID + "            Start Date: " + date,
+                                position: "top",
+                                fontSize: 16,
+                                padding: 20
+                            }
+                        }
+                    });
+                    Charts.push(chart)
+                    const chartElement = document.getElementById(chartID);
+                    const button = document.createElement('button');
+                    document.getElementById(button);
+                    button.padding = "100px 100px 100px 100px";
+                    button.innerHTML = "Download CSV File"
+                    button.addEventListener('click', download_csv.bind(this, times, readings));
+                    buttonId = parseInt((Math.random() * 1000000), 10)
+                    button.id = buttonId
+                    buttonIdentity.push(buttonId)
+                    chartElement.parentNode.insertBefore(button, chartElement.nextSibling);
+                }
+            });
+        }
+
+        function download_csv2(time, readings) {
+            var csv = 'Time,Reading\n';
+            var datas = [];
+            for (let i = 0; i < readings.length; i++) {
+                datas.push([time[i], readings[i]])
+            }
+            datas.forEach(function(row) {
+                csv += row.join(',');
+                csv += "\n";
+            });
+
+            console.log(csv);
+            var hiddenElement = document.createElement('a');
+            hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+            hiddenElement.target = '_blank';
+            hiddenElement.download = 'SensorData.csv';
+            hiddenElement.click();
+        }
+
+        function clearChart(chart) {
+            if (chart != undefined) {
+                chart.destroy();
+            }
+        }
+
+        // Tell the user something
+        function tellUser(message) {
+            $("#userOutput").empty();
+            $("#userOutput").append(message + "</br>");
+        }
+        var docClient = new AWS.DynamoDB.DocumentClient();
+        var table;
+        var tableName = "SkrootSensorTables";
+
+        function queryAndChartTableName(sensorID, date, chartID) {
+            var params = {
+                TableName: tableName,
+                KeyConditionExpression: "SensorID = :sid and #tim = :dat",
+                ExpressionAttributeNames: {
+                    "#tim": "Timestamp"
+                },
+                ExpressionAttributeValues: {
+                    ":sid": sensorID,
+                    ":dat": date
+                }
+            };
+            console.log(params)
+            docClient.query(params, function(err, data) {
+                if (err) {
+                    console.log(JSON.stringify(err, undefined, 2));
+                } else {
+                    //console.log(JSON.stringify(data, undefined, 2));
+                    DataSetsFound = Object.keys(data).length / 3;
+                    console.log(DataSetsFound)
+                    for (i = 1; i <= DataSetsFound; i++) {
+                        if (i > 1) {
+                            chart(data, parseInt((Math.random() * 1000000), 10), date);
+                        } else {
+                            chart(data, chartID, date);
+                        }
+                    }
+                }
+            });
+        }
+
+        function chart(data, chartID, date) {
+            table = data;
+            try {
+                tableNames = table["Items"][0]["TableName"];
+                SensorID = table["Items"][0]["SensorID"];
+                queryAndChartData(tableNames, SensorID, chartID, date);
+            } catch (err) {
+                throw "Exit Error";
+            }
+        }
+
+        function queryAndChartData(tableName, sensorID, chartID, date) {
+            var d = new Date(0);
+            d.setUTCSeconds(date)
+            dates = d.toString()
+            date = dates.substring(0, 15)
+            var params = {
+                TableName: tableName
+            };
+
+            docClient.scan(params, function(err, data) {
+                if (err) {
+                    console.log(JSON.stringify(err, undefined, 2));
+                } else {
+                    //console.log(JSON.stringify(data, undefined, 2));
+
+                    // refine the data to chart it
+                    times = [];
+                    for (var i = 0; i < data["Items"].length; i++) {
+                        var t = data["Items"][i]["Timestamp"];
+                        var t2 = t.toFixed(3)
+                        times.push(t2);
+                    }
+
+                    readings = [];
+                    for (var i = 0; i < data["Items"].length; i++) {
+                        var r = data["Items"][i]["Reading"];
+                        var r2 = r.toFixed(3)
+                        readings.push(r2);
+                    }
+                    var canvas = document.createElement('canvas');
+                    canvas.id = chartID;
+                    //var body=document.getElementById("loggedInView")
+                    var body = document.getElementsByTagName("Body")[0];
+                    body.appendChild(canvas);
+                    var ctx1 = document.getElementById(chartID).getContext('2d');
+                    var myChar1 = new Chart(ctx1, {
+                        type: 'line',
+                        data: {
+                            labels: times,
+                            datasets: [{
+                                data: readings,
+                                backgroundColor: 'rgba(0, 200, 255, 0.2)',
+                                borderColor: 'rgba(0, 200, 255, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            layout: {
+                                padding: {
+                                    left: 0,
+                                    right: 0,
+                                    top: 50,
+                                    bottom: 0
+                                },
+                            },
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        fontSize: 20,
+                                        labelString: "Frequency (MHz)"
+                                    },
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        fontSize: 20,
+                                        labelString: "Time (hours)"
+                                    },
+                                }]
+                            },
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: "SensorID: " + sensorID + "            Start Date: " + date,
+                                position: "top",
+                                fontSize: 16,
+                                padding: 20
+                            }
+                        }
+                    });
+                    const chartElement = document.getElementById(chartID);
+                    const button = document.createElement('button');
+                    document.getElementById(button);
+                    button.padding = "100px 100px 100px 100px";
+                    button.innerHTML = "Download CSV File"
+                    button.addEventListener('click', download_csv.bind(this, times, readings));
+                    chartElement.parentNode.insertBefore(button, chartElement.nextSibling);
+                    if (LinkText !== "SensorID: " + sensorID) {
+                        var a = document.createElement('a');
+                        LinkText = "SensorID: " + sensorID
+                        var linkText = document.createTextNode("SensorID: " + sensorID);
+                        a.appendChild(linkText);
+                        a.href = '#' + chartID;
+                        document.getElementById("mySidenav").appendChild(a);
+                    } else {
+                        console.log("Link already exists")
+                    }
+                }
+            });
+        }
+
+        function download_csv(time, readings) {
+            var csv = 'Time,Reading\n';
+            var datas = [];
+            for (let i = 0; i < readings.length; i++) {
+                datas.push([time[i], readings[i]])
+            }
+            datas.forEach(function(row) {
+                csv += row.join(',');
+                csv += "\n";
+            });
+
+            console.log(csv);
+            var hiddenElement = document.createElement('a');
+            hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+            hiddenElement.target = '_blank';
+            hiddenElement.download = 'SensorData.csv';
+            hiddenElement.click();
+        }
+
+        var j = 1
+        var buttons = 0
+        // Enter in each of the sensorIDs and start/stop times below. Ensure correct order when entering this.
+        let TimeStart = ['2020-07-08 00:00:00 UTC', '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
+        // Input the day the sensors are given to the customer here
+        let TimeStop = ['2020-07-11 00:00:00 UTC', '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
+        // Input the day the sensors are going to be returned here (if not sure input a few years into the future -> do not forget to change this!!!)
+        let Sensor = ["33B178", "5EAD48", "BE2312"]
+        // Input the SensorID given to the customer here
+
+        var getEpochMillis = function(dateStr) {
+            var r = /^\s*(\d{4})-(\d\d)-(\d\d)\s+(\d\d):(\d\d):(\d\d)\s+UTC\s*$/,
+                m = ("" + dateStr).match(r);
+            return (m) ? Date.UTC(m[1], m[2] - 1, m[3], m[4], m[5], m[6]) : undefined;
+        };
+        StartTime = []
+        StopTime = []
+        Charts = []
+        buttonIdentity = []
+        Canvases = []
+        LinkText = "Blah"
+        for (var L = 0; L <= TimeStart.length; L++) {
+            StartTime.push(getEpochMillis(TimeStart[L]) / 1000)
+            StopTime.push(getEpochMillis(TimeStop[L]) / 1000)
+        }
+
+        function SignedIn(StartTime, StopTime, Sensor) {
+            for (var f = 0; f <= StartTime.length; f++) {
+                timeout = 500 * f
+                myVar = setTimeout(RunningTests, timeout, StartTime, StopTime, Sensor, f)
+            }
+        }
+
+        function RunningTests(StartTime, StopTime, Sensor, f) {
+            for (var i = StartTime[f]; i <= StopTime[f]; i += 86400) { //86400 sec per day
+                var Time = i
+                var ChartName = parseInt((Math.random() * 1000000), 10)
+                try {
+                    queryAndChartTableName(Sensor[f], Time, ChartName)
+                } catch (err) {
+                    document.getElementById("demo").innerHTML = err.message;
+                    console.log("What?!?!")
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
