@@ -2,22 +2,37 @@
 <html lang="en" dir="ltr">
 
 <head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <meta charset="utf-8">
   <title>Meet the Team</title>
-</head>
-
-<body>
   <style>
-    div.hovertext {
-      display: none;
-      position: absolute;
-    }
-
     .container {
       position: relative;
       text-align: center;
       color: white;
     }
+
+    .navbutton {
+      background-color: transparent;
+      border-color: transparent;
+      color: black;
+      text-decoration: underline;
+      font-size: 15px;
+      padding: 20px;
+    }
+
+    .footer {
+      margin-top: 200px;
+      padding-left: 150px;
+      padding-bottom: 100px;
+      padding-right: 150px;
+    }
+
+    div.hovertext {
+      display: none;
+      position: absolute;
+    }
+
     a.image:hover+div.hovertext {
       display: block;
       position: absolute;
@@ -29,6 +44,33 @@
       size: 400px, 400px;
     }
   </style>
+</head>
+
+<bodyoverflow-y:auto>
+  <div class="container">
+    <div style="padding:5px; float:left">
+      <img src="Images/logo.png" alt="SKROOTLAB" />
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="" class="navbutton" role="primary">Home</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="technology.html" class="navbutton" role="button">Technology</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="team.html" class="navbutton" role="button">Team</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="news.html" class="navbutton" role="button">News</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="contact-us.html" class="navbutton" role="button">Contact Us</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="sensors.html" class="navbutton" role="button">Sensors</a>
+    </div>
+  </div>
+
   <div class="container" style="padding:5px; float:left">
     <a class="image"><img src="Images/NigelProfilePic.png" width="400" height="400" alt="Nigel" /></a>
     <div class="hovertext">Nigel Reuel - President, builds, codes, and works with new partners</div>
@@ -53,6 +95,14 @@
     <a class="image"><img src="Images/Chuck Profile Pic Cropped.jpg" width="400" height="400" alt="Chuck" /></a>
     <div class="hovertext">Charles "Chuck" Glatz - VP Biomanufacturing, ensures top quality</div>
   </div>
-</body>
+  <footer>
+    <div class="footer">
+      <p style="padding-bottom:20px; padding-top:100px">Copyright 2020</p>
+      <a href="https://twitter.com/skrootlab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @skrootlab</a>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></br>
+      <a href="mailto:info@skrootlab.com" target="_blank" alt="Mail" class="btn btn-primary" role="button">Email Us</a>
+    </div>
+  </footer>
+  </body>
 
 </html>

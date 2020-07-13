@@ -1,10 +1,112 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <img src="Images/Reader.png" alt="Reader" width=200 height=200 />
-  </body>
+
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <style>
+    .container {
+      position: relative;
+      text-align: center;
+      color: white;
+    }
+
+    .sectionsLeft {
+      width: 40%;
+      padding-top: 20px;
+      margin-left: 200px;
+      float: left;
+    }
+
+    .sectionsRight {
+      width: 40%;
+      padding-top: 20px;
+      margin-right: 100px;
+      float: left;
+    }
+
+    .navbutton {
+      background-color: transparent;
+      border-color: transparent;
+      color: black;
+      text-decoration: underline;
+      font-size: 15px;
+      padding: 20px;
+    }
+
+    .footer {
+      margin-top: 200px;
+      padding-left: 150px;
+      padding-bottom: 100px;
+      padding-right: 150px;
+    }
+  </style>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body overflow-y:auto>
+  <div class="container">
+    <div style="padding:5px; float:left">
+      <img src="Images/logo.png" alt="SKROOTLAB" />
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="" class="navbutton" role="primary">Home</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="html/technology.html" class="navbutton" role="button">Technology</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="html/team.html" class="navbutton" role="button">Team</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="html/news.html" class="navbutton" role="button">News</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="html/contact-us.html" class="navbutton" role="button">Contact Us</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="html/sensors.html" class="navbutton" role="button">Sensors</a>
+    </div>
+  </div>
+  <div style="margin-top:100px; margin-left:200px">
+    <p>The <strong>SKROOT</strong> platform comes in three parts: </p></br>
+    <img src="Images/Reader.png" alt="Reader" width=90% height=80% margin-left=auto margin-right=auto />
+    <p style="padding-top:50px"><strong>Three</strong> easy steps for use: (1) place sensor sticker on reactor, (2) place reader near sensor, (3) power it on.</p></br>
+    <p>Data can be observed from any internet enabled device. Critical time-points (feed, harvest, induction) are pushed via text-message or email to operators. Numerous readers can be connected to a single cloud gateway enabling large number of
+      vessels to be monitored; this is ideal for upstream process development.</p></br>
+  </div>
+  <div class=sectionsLeft>
+    <p><strong>Sensor Availability - testing with BETA Parnters</strong></p>
+    <ul>
+      <li>Cell density</li>
+      <li>Cell viability</li>
+      <li>Conductivity (media preparation)</li>
+      <li>Temperature</li>
+    </ul>
+    <p>Email us at info@skrootlab.com if you are interested in testing our technology at your facility.</p>
+  </div>
+  <div class=sectionsRight>
+    <p><strong>Technology Features</strong></p>
+    <ul>
+      <li>Conformable, flexible</li>
+      <li>Placed as an external sticker</li>
+      <li>Can be embedded in single use bioreactors</li>
+      <li>Passive (no on board power)</li>
+      <li>Sterilizable (gamma radiation or autoclave)</li>
+      <li>Wireless, cloud enabled</li>
+      <li>Can be hardwired for established control systems (4-24 mA control)</li>
+      <li>Multiplex ease</li>
+      <li>Suited for upstream, small reactor use</li>
+    </ul>
+  </div>
+  <footer>
+    <div class="footer">
+      <p style="padding-bottom:20px; padding-top:100px">Copyright 2020</p>
+      <a href="https://twitter.com/skrootlab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @skrootlab</a>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></br>
+      <a href="mailto:info@skrootlab.com" target="_blank" alt="Mail" class="btn btn-primary" role="button">Email Us</a>
+    </div>
+  </footer>
+</body>
+
 </html>
