@@ -21,7 +21,10 @@
       padding-bottom: 100px;
       padding-right: 150px;
     }
-
+    .required-field::after {
+      content: "*";
+      color: red;
+    }
   </style>
 </head>
 
@@ -52,9 +55,23 @@
   <div id=formheader style="float:left;padding-left: 150px;padding-top: 60px">
     <p><span style="font-size:25px; font-weight:bold">Questions? Drop us a note... </span></br><span style="color:red"> *</span> indicates required field</p>
   </div>
+
   <div id=form>
-    
+    <div style="float: left; width:20%;height:10%;padding-top:150">
+      <label for="FName" class="required-field">Name</label></br>
+      <input aria-required="true" id="FName" size=30 type="text" name="First Name" placeholder="First" />
+      <input aria-required="true" id="LName" size=30 type="text" name="Last Name" placeholder="Last" />
+    </div></br>
+    <div style="float: left; width:20%;height:10%">
+      <label for="Email" class="required-field">Email</label><br>
+    <input aria-required="true" id="Email" type="text" name="Email">
+    </div></br>
+    <div style="float: left; width:20%; height:10%">
+      <label for="Comment" class="required-field">Comment</label><br>
+      <textarea aria-required="true" id="Comment" name="Comment" style="height: 200px"></textarea>
+    </div>
   </div>
+
   <div id="map" style="float:right; padding-right:100px">
     <p><strong>Visit us in Ames,IA</strong></br> 1030 Carver Co-Lab (CCL)</p></br>
   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2963.5017493865626!2d-93.65296078420681!3d42.03241996372117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87ee70baf3619d9b%3A0xb7ae65933ab95b1c!2sRoy+J.+Carver+Co-Lab%2C+1111+WOI+Rd%2C+Ames%2C+IA+50011!5e0!3m2!1sen!2sus!4v1563816042520!5m2!1sen!2sus" width="600" height="450" frameborder="0" style="border:0" allowfullscreen=""></iframe>
