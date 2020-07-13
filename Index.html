@@ -11,54 +11,91 @@
       cursor: pointer;
       border: none;
     }
-    .footer{
-  position:absolute;
-  bottom: 5%;
-  right:80%;
-}
-.MainContent {
-      background-color: #royalblue;
-  }
+
+    .footer {
+      padding-top: 100px;
+      padding-left: 150px;
+      padding-bottom: 100px;
+    }
+
+    .definitions {
+      padding-left: 200px
+    }
+
+    .MainContent {
+      background-color: rgb(51, 51, 153);
+      padding: 100px;
+      margin-top: 50px;
+      margin-bottom: 100px;
+      margin-right: 0px;
+      margin-left: 0px;
+      background-size: cover !important;
+    }
+
+    .navbutton {
+      background-color: transparent;
+      border-color: transparent;
+      color: black;
+      text-decoration: underline;
+      font-size: 15px;
+      padding: 20px;
+    }
+
+    .findoutmore {
+      background-color: white;
+      border-color: transparent;
+      color: black;
+      font-size: 15px;
+      padding: 10px;
+    }
   </style>
   <meta charset="utf-8">
   <title></title>
 </head>
 
 
-<body>
-  <div style="padding:5px; float:left">
-    <img src="Images/logo.png" alt="SKROOTLAB" />
+<body overflow-y:auto>
+  <div class="container">
+    <div style="padding:5px; float:left">
+      <img src="Images/logo.png" alt="SKROOTLAB" />
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="" class="navbutton" role="primary">Home</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="html/technology.html" class="navbutton" role="button">Technology</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="html/team.html" class="navbutton" role="button">Team</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="html/news.html" class="navbutton" role="button">News</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="html/contact-us.html" class="navbutton" role="button">Contact Us</a>
+    </div>
+    <div style="float:left; padding-top:40px; padding-left:15px">
+      <a href="html/sensors.html" class="navbutton" role="button">Sensors</a>
+    </div>
   </div>
-  <div class="container" style="float:left; padding-left: 50px">
-    <div style="float:left; padding:40px">
-      <a href="" class="btn btn-primary" role="primary">Home</a>
+  <div style="width:100%">
+    <div class="MainContent">
+      <h1 align="center" padding=20px style="font-family:arial;color:white; font-weight:bold; font-size:80px">Helping make medicine.</h1></br>
+      <p align="center" style="font-family:arial; color:white; font-size:15px">Wireless process analytical technologies (PAT) for cell and protein therapy developers.</p></br>
+      <div align="center">
+        <a align="center" href="mailto:info@skrootlab.com" target="_blank" alt="Mail" class="findoutmore" role="button">Find out more</a>
+      </div>
     </div>
-    <div style="float:left; padding:40px">
-      <a href="html/technology.html" class="btn btn-primary" role="button">Technology</a>
-    </div>
-    <div style="float:left; padding:40px">
-      <a href="html/team.html" class="btn btn-primary" role="button">Team</a>
-    </div>
-    <div style="float:left; padding:40px">
-      <a href="html/news.html" class="btn btn-primary" role="button">News</a>
-    </div>
-    <div style="float:left; padding:40px">
-      <a href="html/contact-us.html" class="btn btn-primary" role="button">Contact Us</a>
-    </div>
-    <div style="float:left; padding:40px">
-      <a href="html/sensors.html" class="btn btn-primary" role="button">Sensors</a>
-    </div>
+    <p class="definitions">'<strong>Skroot</strong>' = anglicized form of skrót; Polish for 'shortcut.' Faster routes to safer protein and cell therapy products.</p></br>
+    <p class="definitions">'<strong>Laboratory</strong>' = tech development sandbox; a great place to work.</p>
   </div>
-  <div class="MainContent">
-    <h1 align="center">Helping make medicine.</h1></br>
-    <p style="align:center; font-family:arial; color:white">Wireless process analytical technologies (PAT) for cell and protein therapy developers.</p></br>
-    <a align="center" href="mailto:info@skrootlab.com" target="_blank" alt="Mail" class="btn btn-primary" role="button">Find out more</a>
   <footer>
-  <div class="footer">
-    <p style="padding-bottom:20px">Copyright 2020</p>
-    <a href="https://twitter.com/skrootlab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @skrootlab</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></br>
-    <a href="mailto:info@skrootlab.com" target="_blank" alt="Mail" class="btn btn-primary" role="button">Email Us</a>
-  </div>
+    <div class="footer">
+      <p style="padding-bottom:20px">Copyright 2020</p>
+      <a href="https://twitter.com/skrootlab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @skrootlab</a>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></br>
+      <a href="mailto:info@skrootlab.com" target="_blank" alt="Mail" class="btn btn-primary" role="button">Email Us</a>
+    </div>
   </footer>
 </body>
 
