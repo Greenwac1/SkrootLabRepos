@@ -306,9 +306,9 @@
 
             $("#accessDataButton").hide();
             switchToLoggedInView();
-
             idToken = result.getIdToken().getJwtToken();
             getCognitoIdentityCredentials();
+            var FullAttribute = result.getIdToken()
           },
 
           onFailure: function(err) {
@@ -326,7 +326,6 @@
       tellUser("Loading...");
       userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
       cognitoUser = userPool.getCurrentUser();
-
       if (cognitoUser != null) {
         cognitoUser.getSession(function(err, session) {
           if (err) {
@@ -336,6 +335,13 @@
             idToken = session.getIdToken().getJwtToken();
             switchToLoggedInView();
             getCognitoIdentityCredentials();
+
+            //const ReaderID = currentUserInfo.attributes['custom:SensorID']
+            //const StartDate = currentUserInfo.attributes['custom:StartDate']
+            //const StopDate = currentUserInfo.attributes['custom:StopDate']
+            //console.log(ReaderID, StartDate, StopDate)
+
+
           }
         });
       } else {
@@ -452,7 +458,6 @@
           console.log(err);
           tellUser("There was an error accessing the database.")
         } else {
-          console.log("Success.");
           tableNamesStored = data;
           $("#accessDataButton").show();
           tellUser("Connection established!");
@@ -477,15 +482,13 @@
       StartTimes = getEpochMillis(TimeStart) / 1000
       StopTimes = getEpochMillis(TimeStop) / 1000
       if ($("#startTimeInput").val() == "" && $("#stopTimeInput").val() == "") {
-        i = Sensor.indexOf(sensorID)
-        var StopTimes = StopTime[i]
-        var StartTimes = StartTime[i]
+        var StopTimes = StopTime[0]
+        var StartTimes = StartTime[0]
       } else if ($("#stopTimeInput").val() == "") {
         var StopTimes = StartTimes
       } else {
-        var StopTimes = parseInt($("#stopTimeInput").val());
+        var StopTimes = StopTimes
       }
-
       if (Number.isInteger(StartTimes) && Number.isInteger(StopTimes) && sensorID != "") {
         tellUser("Loading...");
         RunningTests2(StartTimes, StopTimes, sensorID)
@@ -548,14 +551,12 @@
           ":dat": date
         }
       };
-      console.log(params)
       docClient.query(params, function(err, data) {
         if (err) {
           console.log(JSON.stringify(err, undefined, 2));
         } else {
           //console.log(JSON.stringify(data, undefined, 2));
           DataSetsFound = Object.keys(data).length / 3;
-          console.log(DataSetsFound)
           for (i = 1; i <= DataSetsFound; i++) {
             if (i > 1) {
               chart2(data, parseInt((Math.random() * 1000000), 10), date);
@@ -694,7 +695,6 @@
         csv += "\n";
       });
 
-      console.log(csv);
       var hiddenElement = document.createElement('a');
       hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
       hiddenElement.target = '_blank';
@@ -717,47 +717,35 @@
     var table;
     var tableName = "SkrootSensorTables";
 
-    function queryAndChartTableName(sensorID, date, chartID) {
+    function queryAndChartTableName(StartDate, StopDate) {
       var params = {
         TableName: tableName,
-        KeyConditionExpression: "SensorID = :sid and #tim = :dat",
+        ProjectionExpression: "#tabn, #tim, #sid",
+        FilterExpression: "#tim between :datStart and :datStop",
         ExpressionAttributeNames: {
-          "#tim": "Timestamp"
+          "#tim": "Timestamp",
+          "#tabn": "TableName",
+          "#sid": "SensorID"
         },
         ExpressionAttributeValues: {
-          ":sid": sensorID,
-          ":dat": date
+          ":datStart": StartDate,
+          ":datStop": StopDate,
         }
       };
-      console.log(params)
-      docClient.query(params, function(err, data) {
+      docClient.scan(params, function(err, data) {
         if (err) {
           console.log(JSON.stringify(err, undefined, 2));
         } else {
-          //console.log(JSON.stringify(data, undefined, 2));
-          DataSetsFound = Object.keys(data).length / 3;
-          console.log(DataSetsFound)
-          for (i = 1; i <= DataSetsFound; i++) {
-            if (i > 1) {
-              chart(data, parseInt((Math.random() * 1000000), 10), date);
-            } else {
-              chart(data, chartID, date);
-            }
+          for (var i = 0; i <= data["Items"].length-1; i++) {
+            var dataTime = data["Items"][i]["Timestamp"];
+            var dataTable = data["Items"][i]["TableName"];
+            var dataSensor = data["Items"][i]["SensorID"];
+            var ChartID = parseInt((Math.random() * 1000000), 10);
+            queryAndChartData(dataTable, dataSensor, ChartID, dataTime);
           }
-        }
+        };
       });
-    }
-
-    function chart(data, chartID, date) {
-      table = data;
-      try {
-        tableNames = table["Items"][0]["TableName"];
-        SensorID = table["Items"][0]["SensorID"];
-        queryAndChartData(tableNames, SensorID, chartID, date);
-      } catch (err) {
-        throw "Exit Error";
-      }
-    }
+    };
 
     function queryAndChartData(tableName, sensorID, chartID, date) {
       var d = new Date(0);
@@ -874,7 +862,6 @@
         csv += "\n";
       });
 
-      console.log(csv);
       var hiddenElement = document.createElement('a');
       hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
       hiddenElement.target = '_blank';
@@ -885,9 +872,9 @@
     var j = 1
     var buttons = 0
     // Enter in each of the sensorIDs and start/stop times below. Ensure correct order when entering this.
-    let TimeStart = ['2020-07-08 00:00:00 UTC', '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
+    let TimeStart = ['2020-07-08 00:00:00 UTC']//, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
     // Input the day the sensors are given to the customer here
-    let TimeStop = ['2020-07-11 00:00:00 UTC', '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
+    let TimeStop = ['2021-07-10 00:00:00 UTC']//, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
     // Input the day the sensors are going to be returned here (if not sure input a few years into the future -> do not forget to change this!!!)
     let Sensor = ["33B178", "5EAD48", "BE2312"]
     // Input the SensorID given to the customer here
@@ -909,22 +896,20 @@
     }
 
     function SignedIn(StartTime, StopTime, Sensor) {
-      for (var f = 0; f <= StartTime.length; f++) {
-        timeout = 500 * f
-        myVar = setTimeout(RunningTests, timeout, StartTime, StopTime, Sensor, f)
-      }
+      timeout=1
+      myVar = setTimeout(RunningTests, timeout, StartTime, StopTime, 0)
+      //for (var f = 0; f <= StartTime.length; f++) {
+      //  timeout = 500 * f
+      //  myVar = setTimeout(RunningTests, timeout, StartTime, StopTime, f)
+      //}
     }
 
-    function RunningTests(StartTime, StopTime, Sensor, f) {
-      for (var i = StartTime[f]; i <= StopTime[f]; i += 86400) { //86400 sec per day
-        var Time = i
-        var ChartName = parseInt((Math.random() * 1000000), 10)
-        try {
-          queryAndChartTableName(Sensor[f], Time, ChartName)
-        } catch (err) {
-          document.getElementById("demo").innerHTML = err.message;
-          console.log("What?!?!")
-        }
+    function RunningTests(StartTime, StopTime, f) {
+      try {
+        queryAndChartTableName(StartTime[f], StopTime[f])
+      } catch (err) {
+        document.getElementById("demo").innerHTML = err.message;
+        console.log("What?!?!")
       }
     }
   </script>
