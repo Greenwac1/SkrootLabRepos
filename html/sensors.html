@@ -546,7 +546,7 @@
 
       function queryAndChartData2(tableName, sensorID, chartID, date) {
         var d = new Date(0);
-        d.setUTCSeconds(date+86400)
+        d.setUTCSeconds(date+36000)
         dates = d.toString()
         var chartID = parseInt((Math.random() * 1000000), 10)
         date = dates.substring(0, 21) + ' UTC'
@@ -714,7 +714,7 @@
 
       function queryAndChartData(tableName, sensorID, chartID, date) {
         var d = new Date(0);
-        d.setUTCSeconds(date+86400)
+        d.setUTCSeconds(date+36000)
         dates = d.toString()
         date = dates.substring(0, 21) + ' UTC'
         var params = {
