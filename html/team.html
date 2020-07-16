@@ -16,17 +16,31 @@
     font-size: 15px;
     padding: 20px;
   }
-
-  .imgcontainer {
-    position: relative;
-    text-align: center;
-    color: white;
-    padding: 5px;
-    float: left;
-    height: 370px;
-    width: 370px;
-    display: inline
+  @media only screen and (min-width: 1200px) {
+    .imgcontainer {
+      position: relative;
+      text-align: center;
+      color: white;
+      padding: 5px;
+      float: left;
+      height: 370px;
+      width: 370px;
+    }
   }
+
+  @media only screen and (max-width: 320px) {
+    .imgcontainer {
+      position: relative;
+      text-align: center;
+      color: white;
+      padding: 5px;
+      float: left;
+      height: 100px;
+      width: 100px;
+    }
+}
+
+
 
   .image {
     width: 100%;
