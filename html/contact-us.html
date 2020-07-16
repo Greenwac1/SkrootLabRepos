@@ -37,6 +37,11 @@
         padding-top: 75px;
       }
 
+      .Questions {
+        font-weight: bold;
+        font-size: 40px;
+      }
+
       .map {
         float: left;
         padding-right: 50px;
@@ -47,6 +52,10 @@
         width:100%;
       }
 
+      label {
+        padding-bottom: 7px;
+        font-size: 20px;
+      }
 
       .resp-iframe {
         position: relative;
@@ -62,6 +71,16 @@
         padding-left: 150px;
         padding-right: 100px;
         padding-top: 75px;
+      }
+
+      label {
+        padding-bottom: 7px;
+        font-size: 15px;
+      }
+
+      .Questions {
+        font-weight: bold;
+        font-size: 30px;
       }
 
       .map {
@@ -113,7 +132,7 @@
     <form enctype="multipart/form-data" action="//www.weebly.com/weebly/apps/formSubmit.php" method="POST" class="Form">
       <div id="form container" style="margin-top:10px;">
         <ul id="form">
-          <h2 style="font-weight:bold">Questions? Drop us a note...</h2>
+          <h2 class="Questions">Questions? Drop us a note...</h2>
 
           <label><span style="color:red">*</span> Indicates required field</label>
           <div>
@@ -122,7 +141,7 @@
               <div>
                 <input aria-required="true" id="First Name" placeholder="First" type="text" style="float:left;margin-right:26px" />
               </div>
-              <div class="wsite-form-input-container wsite-form-right wsite-form-input-last-name">
+              <div class="wsite-form-input-container">
                 <input aria-required="true" id="Last Name" placeholder="Last" type="text" style="float:left" />
               </div></br></br>
               <div>
