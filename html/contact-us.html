@@ -6,7 +6,6 @@
   <meta charset="utf-8">
   <title>Contact Us</title>
   <style>
-
     .required-field::after {
       content: "*";
       color: red;
@@ -31,9 +30,9 @@
       }
 
       .logo {
-        padding:5px;
-        padding-left:40%;
-        float:left;
+        padding: 5px;
+        padding-left: 40%;
+        float: left;
         margin: 0 auto;
       }
 
@@ -62,8 +61,8 @@
         margin-bottom: 150px;
         margin-left: 50px;
         padding-top: 0px;
-        height:600px;
-        width:100%;
+        height: 600px;
+        width: 100%;
       }
 
       label {
@@ -77,6 +76,51 @@
         height: 90%;
         border: 0;
       }
+    }
+
+    .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: rgba(255, 255, 255, 0.95);
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+
+    .sidenav a {
+      margin-left: 40%;
+      padding-top: 2.5%;
+      text-decoration: none;
+      font-size: 40px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
+
+    .sidenavbutton {
+      font-size: 50px;
+      cursor: pointer;
+      text-align: left;
+      padding-left:8%;
+      padding-top:1%;
+      position:absolute;
+      display:block;
+    }
+
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
     }
 
     @media only screen and (min-width: 1200px) {
@@ -98,13 +142,13 @@
       }
 
       .logo {
-        padding:5px;
-        float:left;
+        padding: 5px;
+        float: left;
       }
 
       .Visit {
         padding-top: 10px;
-        font-size:20px;
+        font-size: 20px;
       }
 
       .Form {
@@ -130,8 +174,8 @@
         margin-bottom: 150px;
         margin-left: 50px;
         padding-top: 75px;
-        height:600px;
-        width:50%;
+        height: 600px;
+        width: 50%;
       }
 
 
@@ -141,13 +185,76 @@
         height: 90%;
         border: 0;
       }
+      .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: rgba(255, 255, 255, 0.95);
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+      }
+
+      .sidenav a {
+        margin-left: 40%;
+        padding-top: 2.5%;
+        text-decoration: none;
+        font-size: 40px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+      }
+
+      .sidenav a:hover {
+        color: #f1f1f1;
+      }
+
+      .sidenavbutton {
+        font-size: 50px;
+        cursor: pointer;
+        text-align: left;
+        padding-left:8%;
+        padding-top:1%;
+        position:absolute;
+        display:none;
+      }
+
+      .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+      }
     }
   </style>
-</head>
+  <script>
+    function openNav() {
+      document.getElementById("mySidenav").style.width = "100%";
+    }
 
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    }
+  </script>
+
+</head>
+<span class="sidenavbutton" onclick="openNav()">&#9776;</span>
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="home.html">Home</a>
+      <a href="technology.html">Technology</a>
+      <a href="team.html">Team</a>
+      <a href="news.html">News</a>
+      <a href="contact-us.html">Contact Us</a>
+      <a href="sensors.html">Sensors</a>
+</div>
 <body overflow-y:auto>
   <div class="container">
-    <div class = "logo">
+    <div class="logo">
       <img src="Images/logo.png" alt="SKROOTLAB" />
     </div>
     <div style="float:left; padding-top:40px; padding-left:15px">
@@ -217,15 +324,15 @@
     <p class="Visit"><strong>Visit us in Ames,IA</strong></br> 1030 Carver Co-Lab (CCL)</p></br>
     <iframe
       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2963.5017493865626!2d-93.65296078420681!3d42.03241996372117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87ee70baf3619d9b%3A0xb7ae65933ab95b1c!2sRoy+J.+Carver+Co-Lab%2C+1111+WOI+Rd%2C+Ames%2C+IA+50011!5e0!3m2!1sen!2sus!4v1563816042520!5m2!1sen!2sus"
-      class= "resp-iframe" allowfullscreen="true"></iframe>
+      class="resp-iframe" allowfullscreen="true"></iframe>
   </div>
-   <footer>
-  <div class="footer">
-    <p style="padding-bottom:20px; padding-top:100px">Copyright 2020</p>
-    <a href="https://twitter.com/skrootlab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @skrootlab</a>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></br>
-    <a href="mailto:info@skrootlab.com" target="_blank" alt="Mail" class="btn btn-primary" role="button">Email Us</a>
-  </div>
+  <footer>
+    <div class="footer">
+      <p style="padding-bottom:20px; padding-top:100px">Copyright 2020</p>
+      <a href="https://twitter.com/skrootlab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @skrootlab</a>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></br>
+      <a href="mailto:info@skrootlab.com" target="_blank" alt="Mail" class="btn btn-primary" role="button">Email Us</a>
+    </div>
   </footer>
 </body>
 
