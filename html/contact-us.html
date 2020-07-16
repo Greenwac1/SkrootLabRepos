@@ -26,6 +26,62 @@
       content: "*";
       color: red;
     }
+
+    @media only screen and (max-width: 1100px) {
+      .Form {
+        width: 100%;
+        height: 50%;
+        float: left;
+        padding-left: 150px;
+        padding-right: 100px;
+        padding-top: 75px;
+      }
+
+      .map {
+        float: left;
+        padding-right: 100px;
+        margin-bottom: 150px;
+        margin-left: 50px;
+        padding-top: 75px;
+        height:50%;
+        width:100%;
+      }
+
+
+      .resp-iframe {
+        position: relative;
+        width: 100%;
+        height: 90%;
+        border: 0;
+      }
+    }
+
+    @media only screen and (min-width: 1200px) {
+      .Form {
+        float: left;
+        padding-left: 150px;
+        padding-right: 100px;
+        padding-top: 75px;
+      }
+
+      .map {
+        float: left;
+        padding-right: 100px;
+        margin-bottom: 150px;
+        margin-left: 50px;
+        padding-top: 75px;
+        height:600px;
+        width:50%;
+      }
+
+
+      .resp-iframe {
+        position: relative;
+        width: 100%;
+        height: 90%;
+        border: 0;
+      }
+    }
   </style>
 </head>
 
@@ -54,7 +110,7 @@
     </div>
   </div>
   <div>
-    <form enctype="multipart/form-data" action="//www.weebly.com/weebly/apps/formSubmit.php" method="POST" id="form-916814867715591219" style="float:left; padding-left:150px;padding-right:100px; padding-top:75px">
+    <form enctype="multipart/form-data" action="//www.weebly.com/weebly/apps/formSubmit.php" method="POST" class="Form">
       <div id="form container" style="margin-top:10px;">
         <ul id="form">
           <h2 style="font-weight:bold">Questions? Drop us a note...</h2>
@@ -73,7 +129,7 @@
                 <div class="wsite-form-field" style="margin:5px 0px 5px 0px;">
                   <label class="required-field" for="Email">Email</label>
                   <div class="wsite-form-input-container">
-                    <input aria-required="true" id="Email" type="text" name="Email" style="width:390px" />
+                    <input aria-required="true" id="Email" type="text" name="Email" style="width:100%" />
                   </div></br>
                 </div>
               </div>
@@ -81,7 +137,7 @@
               <div class="wsite-form-field" style="margin:5px 0px 5px 0px;">
                 <label class="required-field" for="Comment">Comment</label>
                 <div>
-                  <textarea aria-required="true" id="Comment" style="height: 200px;width:390px"></textarea>
+                  <textarea aria-required="true" id="Comment" style="height: 200px;width:100%"></textarea>
                 </div>
               </div>
             </div>
@@ -97,12 +153,13 @@
     </form>
   </div>
 
-  <div id="map" style="float:left; padding-right:100px; margin-bottom:150px; margin-left:50px; padding-top:75px">
+  <div id="map" class="map">
     <p><strong>Visit us in Ames,IA</strong></br> 1030 Carver Co-Lab (CCL)</p></br>
     <iframe
       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2963.5017493865626!2d-93.65296078420681!3d42.03241996372117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87ee70baf3619d9b%3A0xb7ae65933ab95b1c!2sRoy+J.+Carver+Co-Lab%2C+1111+WOI+Rd%2C+Ames%2C+IA+50011!5e0!3m2!1sen!2sus!4v1563816042520!5m2!1sen!2sus"
-      width="600" height="450" frameborder="0" style="border:0" allowfullscreen=""></iframe>
-  </div <footer>
+      class= "resp-iframe" allowfullscreen="true"></iframe>
+  </div>
+   <footer>
   <div class="footer">
     <p style="padding-bottom:20px; padding-top:100px">Copyright 2020</p>
     <a href="https://twitter.com/skrootlab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @skrootlab</a>
