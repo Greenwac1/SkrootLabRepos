@@ -180,7 +180,7 @@
       <input id="logOutButton" type="Button" value="Log Out" onclick="logOut()">
     </div></br>
   </div>
-<h1 style="color: royalblue;padding-top:100px">All Results</h1>
+<h1 id = "head" style="color: royalblue;padding-top:100px"></h1>
 
 
 
@@ -254,7 +254,8 @@
       function switchToLoggedInView() {
         hideAll();
         $("#loggedInView").show();
-
+        var element = document.getElementById("head");
+        element.innerHTML = "All Results"
         docClient = new AWS.DynamoDB.DocumentClient();
       }
 
@@ -266,6 +267,11 @@
           switchToSignInView();
           cognitoUser.signOut();
           tellUser('Logged out!');
+          var element = document.getElementById("head");
+          element.innerHTML = ""
+          var element = document.getElementById("")
+          deleteOldCharts2()
+          deleteOldButtons2()
         }
       }
 
@@ -484,6 +490,35 @@
         }
       }
 
+
+      function deleteOldCharts2() {
+        Charts2.forEach(deleteExtra2);
+        Canvases2.forEach(deleteCanvas2);
+      }
+      function deleteOldButtons2() {
+        buttonIdentity2.forEach(deleteExtraButtons2);
+      }
+
+      function deleteExtraButtons2(button) {
+        document.getElementById(button).remove();
+        buttonIdentity2 = []
+      }
+
+      function deleteExtra2(Chart) {
+        Chart.destroy()
+        Charts2 = []
+      }
+
+      function deleteCanvas2(Canvas) {
+        Canvas.remove()
+        Canvases2 = []
+      }
+
+      function deleteOldCharts() {
+        Charts.forEach(deleteExtra);
+        Canvases.forEach(deleteCanvas);
+      }
+
       function deleteOldButtons() {
         buttonIdentity.forEach(deleteExtraButtons);
       }
@@ -492,11 +527,6 @@
         document.getElementById(button).remove();
         buttonIdentity = []
 
-      }
-
-      function deleteOldCharts() {
-        Charts.forEach(deleteExtra);
-        Canvases.forEach(deleteCanvas);
       }
 
       function deleteExtra(Chart) {
@@ -508,6 +538,8 @@
         Canvas.remove()
         Canvases = []
       }
+
+
 
       function queryAndChartTableName2(StartTime, StopTime, sensorID) {
         var chartID = parseInt((Math.random() * 1000000), 10)
@@ -746,6 +778,7 @@
             //var body=document.getElementById("loggedInView")
             var body = document.getElementsByTagName("Body")[0];
             body.appendChild(canvas);
+            Canvases2.push(canvas)
             var ctx1 = document.getElementById(chartID).getContext('2d');
             var myChar1 = new Chart(ctx1, {
               type: 'line',
@@ -795,12 +828,16 @@
                 }
               }
             });
+            Charts2.push(myChar1)
             const chartElement = document.getElementById(chartID);
             const button = document.createElement('button');
             document.getElementById(button);
             button.padding = "100px 100px 100px 100px";
             button.innerHTML = "Download CSV File"
             button.addEventListener('click', download_csv.bind(this, times, readings));
+            buttonId = parseInt((Math.random() * 1000000), 10)
+            button.id = buttonId
+            buttonIdentity2.push(buttonId)
             chartElement.parentNode.insertBefore(button, chartElement.nextSibling);
             if (LinkText !== "SensorID: " + sensorID) {
               var a = document.createElement('a');
@@ -854,6 +891,9 @@
       Charts = []
       buttonIdentity = []
       Canvases = []
+      Charts2 = []
+      buttonIdentity2 = []
+      Canvases2 = []
       LinkText = "Blah"
       for (var L = 0; L <= TimeStart.length; L++) {
         StartTime.push(getEpochMillis(TimeStart[L]) / 1000)
