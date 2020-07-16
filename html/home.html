@@ -24,10 +24,6 @@
       padding-bottom: 100px;
     }
 
-    .definitions {
-      padding-left: 200px
-    }
-
     .MainContent {
       background-color: rgb(51, 51, 153);
       padding: 100px;
@@ -54,7 +50,20 @@
       font-size: 15px;
       padding: 10px;
     }
+
     @media only screen and (max-width: 1100px) {
+
+      .definitions {
+        padding-left: 50px;
+        font-size: 25px;
+      }
+
+      .PAT {
+        font-family: arial;
+        color: white;
+        font-size: 20px;
+      }
+
       .footer {
         margin-top: 200px;
         padding-left: 50px;
@@ -74,7 +83,7 @@
 
       .logo {
         padding: 5px;
-        margin-top:5%;
+        margin-top: 5%;
         padding-left: 35%;
         float: left;
         margin: 0 auto;
@@ -153,10 +162,10 @@
       font-size: 80px;
       cursor: pointer;
       text-align: left;
-      padding-left:14%;
-      padding-top:3%;
-      position:absolute;
-      display:block;
+      padding-left: 14%;
+      padding-top: 3%;
+      position: absolute;
+      display: block;
     }
 
     .sidenav .closebtn {
@@ -169,6 +178,18 @@
     }
 
     @media only screen and (min-width: 1200px) {
+
+      .definitions {
+        padding-left: 150px;
+        font-size: 20px
+      }
+
+      .PAT {
+        font-family: arial;
+        color: white;
+        font-size: 15px;
+      }
+
       .footer {
         margin-top: 200px;
         padding-left: 150px;
@@ -222,10 +243,10 @@
         font-size: 50px;
         cursor: pointer;
         text-align: left;
-        padding-left:8%;
-        padding-top:1%;
-        position:absolute;
-        display:none;
+        padding-left: 8%;
+        padding-top: 1%;
+        position: absolute;
+        display: none;
       }
 
       .sidenav .closebtn {
@@ -251,14 +272,15 @@
 </head>
 <span class="sidenavbutton" onclick="openNav()">&#9776;</span>
 <div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <a href="home.html">Home</a>
-      <a href="technology.html">Technology</a>
-      <a href="team.html">Team</a>
-      <a href="news.html">News</a>
-      <a href="contact-us.html">Contact Us</a>
-      <a href="sensors.html">Sensors</a>
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="home.html">Home</a>
+  <a href="technology.html">Technology</a>
+  <a href="team.html">Team</a>
+  <a href="news.html">News</a>
+  <a href="contact-us.html">Contact Us</a>
+  <a href="sensors.html">Sensors</a>
 </div>
+
 <body overflow-y:auto>
   <div class="container">
     <div class="logo">
@@ -286,7 +308,7 @@
   <div style="width:100%">
     <div class="MainContent">
       <h1 align="center" padding=20px style="font-family:arial;color:white; font-weight:bold; font-size:80px">Helping make medicine.</h1></br>
-      <p align="center" style="font-family:arial; color:white; font-size:15px">Wireless process analytical technologies (PAT) for cell and protein therapy developers.</p></br>
+      <p align="center" class="PAT">Wireless process analytical technologies (PAT) for cell and protein therapy developers.</p></br>
       <div align="center">
         <a align="center" href="mailto:info@skrootlab.com" target="_blank" alt="Mail" class="findoutmore" role="button">Find out more</a>
       </div>
