@@ -1,18 +1,13 @@
 /*
-        This is code adapted from this blog post:
-        https://auxenta.com/blog_User_Authentication_and_Authorization_with_AWS_Cognito.php
+This is code adapted from this blog post:
+https://auxenta.com/blog_User_Authentication_and_Authorization_with_AWS_Cognito.php
 
-        Primarily designed and written by Suminda De Silva
-        Reframed by Adam Rice for Skroot Labs Inc.
-        */
+Primarily designed and written by Suminda De Silva
+Reframed by Adam Rice for Skroot Labs Inc.
+*/
 
 
 // AWS IDs
-// var userPoolId = 'us-east-2_2Yp5dOApk';
-// var clientId = '6cbstoshp6a3r66vghh593c0b';
-// var region = 'us-east-2';
-// var identityPoolId = 'us-east-2:0c3799ba-af33-4541-b3db-e5e9fb509877';
-
 var userPoolId = 'us-east-2_GfASc6bnY';
 var clientId = '1t46ujgd3tl59vtutuvkmnah53';
 var region = 'us-east-2';
