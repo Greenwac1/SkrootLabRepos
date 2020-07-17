@@ -60,7 +60,6 @@
       }
       .ViewHead {
         color: royalblue;
-        padding-left:2%;
         padding-bottom:2%;
         padding-top:3%;
       }
@@ -301,14 +300,14 @@
     <div id="userOutput" style="width: 700px; height: 10px; float: left; margin-top: 20px"></div>
   </div>
 
-  <div id="verificationView">
+  <div id="verificationView" class="View">
     <h1 class="ViewHead">Verify Your Account</h1>
     <input id="verificationCodeInput" type="text" placeholder="Verification Code" /></br>
     <input id="verifyCodeButton" type="button" value="Verify" onclick="verifyCode()" style="margin-top:20px"></br>
     <div id="userOutput" style="width: 700px; height: 10px; float: left; margin-top: 20px"></div>
   </div>
 
-  <div id="signInView">
+  <div id="signInView" class="View">
     <h1 class="ViewHead">Sign In</h1>
     <input id="usernameInput" type="text" placeholder="Username" style="float:left;margin-right:50px"/>
     <input id="passwordInput" type="password" placeholder="Password" style="float:left"/></br></br></br>
@@ -319,7 +318,7 @@
 
 
 
-  <div id="loggedInView">
+  <div id="loggedInView" class="View">
     <h1 style="color: royalblue; padding-top: 3%">Search For Results</h1>
     <div style="float: left; width:25%">
       <label for="sensorIdInput" class="required-field">Reader ID</label></br>
