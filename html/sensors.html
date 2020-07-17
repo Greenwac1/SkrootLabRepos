@@ -54,6 +54,10 @@
     }
 
     @media only screen and (max-width: 1100px) {
+      .ViewHead {
+        color: royalblue;
+        padding-left:2%;
+      }
       .footer {
         margin-top: 200px;
         padding-left: 50px;
@@ -78,7 +82,7 @@
         float: left;
         margin: 0 auto;
       }
-      
+
       .Visit {
         margin-top: 10px;
         font-size: 20px;
@@ -166,6 +170,9 @@
     }
 
     @media only screen and (min-width: 1200px) {
+      .ViewHead {
+        color: royalblue
+      }
       body {
         font-family: "Lato", sans-serif;
         background-color: white;
@@ -277,7 +284,7 @@
   </div>
 
   <div id="registerView">
-    <h1 style="color: royalblue">Register For An Account</h1>
+    <h1 class="ViewHead">Register For An Account</h1>
     <input id="emailInput" type="text" placeholder="Email" style="margin-bottom:20px"/></br>
     <input id="newUsernameInput" type="text" placeholder="Username" style="margin-bottom:20px" /></br>
     <input id="newPasswordInput" type="password" placeholder="Password" style="margin-bottom:20px" /></br>
@@ -289,14 +296,14 @@
   </div>
 
   <div id="verificationView">
-    <h1 style="color: royalblue">Verify Your Account</h1>
+    <h1 class="ViewHead">Verify Your Account</h1>
     <input id="verificationCodeInput" type="text" placeholder="Verification Code" /></br>
     <input id="verifyCodeButton" type="button" value="Verify" onclick="verifyCode()" style="margin-top:20px"></br>
     <div id="userOutput" style="width: 700px; height: 10px; float: left; margin-top: 20px"></div>
   </div>
 
   <div id="signInView">
-    <h1 style="color: royalblue">Sign In</h1>
+    <h1 class="ViewHead">Sign In</h1>
     <input id="usernameInput" type="text" placeholder="Username" style="float:left;margin-right:50px"/>
     <input id="passwordInput" type="password" placeholder="Password" style="float:left"/></br></br></br>
     <input id="logInButton" type="Button" value="Log In" onclick="logIn()" style="float:left;margin-right:50px; padding-right:15px;padding-left:15px;margin-top:20px">
