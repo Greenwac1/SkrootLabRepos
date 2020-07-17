@@ -1053,16 +1053,6 @@
             button.id = buttonId
             buttonIdentity2.push(buttonId)
             chartElement.parentNode.insertBefore(button, chartElement.nextSibling);
-            if (LinkText !== "SensorID: " + sensorID) {
-              var a = document.createElement('a');
-              LinkText = "SensorID: " + sensorID
-              var linkText = document.createTextNode("SensorID: " + sensorID);
-              a.appendChild(linkText);
-              a.href = '#' + chartID;
-              document.getElementById("mySidenav").appendChild(a);
-            } else {
-              console.log("Link already exists")
-            }
           }
         });
       }
