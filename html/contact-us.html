@@ -31,7 +31,7 @@
 
       .logo {
         padding: 5px;
-        padding-top:5%;
+        padding-top: 5%;
         padding-left: 35%;
         float: left;
         margin: 0 auto;
@@ -77,50 +77,50 @@
         height: 90%;
         border: 0;
       }
-    }
 
-    .sidenav {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      z-index: 1;
-      top: 0;
-      left: 0;
-      background-color: rgba(255, 255, 255, 0.95);
-      overflow-x: hidden;
-      transition: 0.5s;
-      padding-top: 60px;
-    }
+      .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: rgba(255, 255, 255, 0.95);
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+      }
 
-    .sidenav a {
-      margin-left: 40%;
-      padding-top: 4%;
-      text-decoration: none;
-      font-size: 40px;
-      color: #818181;
-      display: block;
-      transition: 0.3s;
-    }
+      .sidenav a {
+        margin-left: 40%;
+        padding-top: 4%;
+        text-decoration: none;
+        font-size: 40px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+      }
 
-    .sidenav a:hover {
-      color: #f1f1f1;
-    }
+      .sidenav a:hover {
+        color: #f1f1f1;
+      }
 
-    .sidenavbutton {
-      font-size: 120px;
-      cursor: pointer;
-      text-align: left;
-      position:absolute;
-      display:block;
-    }
+      .sidenavbutton {
+        font-size: 120px;
+        cursor: pointer;
+        text-align: left;
+        position: absolute;
+        display: block;
+      }
 
-    .sidenav .closebtn {
-      position: absolute;
-      top: 0;
-      right: 25px;
-      font-size: 90px;
-      margin-left: 50px;
-      margin-right: 50px
+      .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 90px;
+        margin-left: 50px;
+        margin-right: 50px
+      }
     }
 
     @media only screen and (min-width: 1200px) {
@@ -185,6 +185,7 @@
         height: 90%;
         border: 0;
       }
+
       .sidenav {
         height: 100%;
         width: 0;
@@ -216,10 +217,10 @@
         font-size: 50px;
         cursor: pointer;
         text-align: left;
-        padding-left:8%;
-        padding-top:1%;
-        position:absolute;
-        display:none;
+        padding-left: 8%;
+        padding-top: 1%;
+        position: absolute;
+        display: none;
       }
 
       .sidenav .closebtn {
@@ -244,14 +245,15 @@
 </head>
 <span class="sidenavbutton" onclick="openNav()">&#9776;</span>
 <div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <a href="home.html">Home</a>
-      <a href="technology.html">Technology</a>
-      <a href="team.html">Team</a>
-      <a href="news.html">News</a>
-      <a href="contact-us.html">Contact Us</a>
-      <a href="sensors.html">Sensors</a>
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="home.html">Home</a>
+  <a href="technology.html">Technology</a>
+  <a href="team.html">Team</a>
+  <a href="news.html">News</a>
+  <a href="contact-us.html">Contact Us</a>
+  <a href="sensors.html">Sensors</a>
 </div>
+
 <body overflow-y:auto>
   <div class="container">
     <div class="logo">
@@ -277,7 +279,7 @@
     </div>
   </div>
   <div>
-    <form enctype="multipart/form-data" action="//www.weebly.com/weebly/apps/formSubmit.php" method="POST" class="Form">
+    <form method="post" action="mailto:greenwalt@skrootlab.com" enctype=”multipart/form-data” class="Form">
       <div id="form container" style="margin-top:10px;">
         <ul id="form">
           <h2 class="Questions">Questions? Drop us a note...</h2>
@@ -287,34 +289,34 @@
             <div style="margin:5px 0px 5px 0px;">
               <label class="required-field">Name</label>
               <div>
-                <textarea aria-required="true" rows="1" id="First Name" placeholder="First" type="text" style="float:left;margin-right:10%; width:45%; outline: 1px solid black; font-size:20px" /></textarea>
+                <textarea aria-required="true" rows="1" id="First" name="First Name" placeholder="First" type="text" style="float:left;margin-right:10%; width:45%; outline: 1px solid black; font-size:20px" /></textarea>
               </div>
               <div class="wsite-form-input-container">
-                <textarea aria-required="true" rows="1" id="Last Name" placeholder="Last" type="text" style="float:left; width:45%; outline: 1px solid black; font-size:20px" /></textarea>
+                <textarea aria-required="true" rows="1" id="Last" name="name" placeholder="Last" type="text" style="float:left; width:45%; outline: 1px solid black; font-size:20px" /></textarea>
               </div></br></br></br>
               <div>
                 <div class="wsite-form-field" style="margin:5px 0px 5px 0px;">
                   <label class="required-field" for="Email">Email</label>
                   <div class="wsite-form-input-container">
-                    <textarea aria-required="true" rows="1" id="Email" type="text" name="Email" style="width:100%; outline: 1px solid black; font-size:20px" /></textarea>
+                    <textarea aria-required="true" rows="1" id="Email" type="text" name="email" style="width:100%; outline: 1px solid black; font-size:20px" /></textarea>
                   </div></br>
                 </div>
               </div>
 
               <div class="wsite-form-field" style="margin:5px 0px 5px 0px;">
-                <label class="required-field" for="Comment">Comment</label>
+                <label class="required-field" name="message" for="Comment">Comment</label>
                 <div>
                   <textarea aria-required="true" id="Comment" style="height: 200px;width:100%; outline: 1px solid black; font-size:20px"></textarea>
                 </div>
               </div>
             </div>
         </ul>
-
       </div>
+
       <div style="text-align:left; margin-top:10px; margin-bottom:10px;">
 
         <a class="wsite-button">
-          <span class="btn btn-default" style="margin-left:30px;margin-bottom:100px">Submit</span>
+          <span id="bt1" class="btn btn-default" type="submit" value="Submit" style="margin-left:30px;margin-bottom:100px">Submit</span>
         </a>
       </div>
     </form>
