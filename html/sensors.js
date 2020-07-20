@@ -32,40 +32,27 @@ var readingsBeingDisplayed;
 var timesBeingDisplayed;
 var displayChart;
 
-
-var j = 1
-var buttons = 0
 // Enter in each of the sensorIDs and start/stop times below. Ensure correct order when entering this.
-let TimeStart = ['2020-07-08 00:00:00 UTC'] //, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
+var TimeStart = ['2020-07-08 00:00:00 UTC'] //, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
 // Input the day the sensors are given to the customer here
-let TimeStop = ['2020-09-10 00:00:00 UTC'] //, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
-// Input the day the sensors are going to be returned here (if not sure input a few years into the future -> do not forget to change this!!!)
-let Sensor = ["33B178", "5EAD48", "BE2312"]
-// Input the SensorID given to the customer here
+var TimeStop = ['2020-09-10 00:00:00 UTC'] //, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
 
-var getEpochMillis = function(dateStr) {
-  var r = /^\s*(\d{4})-(\d\d)-(\d\d)\s+(\d\d):(\d\d):(\d\d)\s+UTC\s*$/,
-    m = ("" + dateStr).match(r);
-  return (m) ? Date.UTC(m[1], m[2] - 1, m[3], m[4], m[5], m[6]) : undefined;
-};
-StartTime = []
-StopTime = []
-Charts = []
-buttonIdentity = []
-Canvases = []
-Charts2 = []
-buttonIdentity2 = []
-Canvases2 = []
-LinkText = "Blah"
+var StartTime = []
+var StopTime = []
+
+var Charts = []
+var buttonIdentity = []
+var Canvases = []
+
+// change
+var Charts2 = []
+var buttonIdentity2 = []
+var Canvases2 = []
+
 for (var L = 0; L <= TimeStart.length; L++) {
   StartTime.push(getEpochMillis(TimeStart[L]) / 1000)
   StopTime.push(getEpochMillis(TimeStop[L]) / 1000)
 }
-
-var docClient = new AWS.DynamoDB.DocumentClient();
-var table;
-var tableName = "SkrootSensorTables";
-
 
 
 switchToRegisterView();
@@ -75,6 +62,12 @@ getCurrentLoggedInSession();
 
 
 /// ************ FUNCTIONS ************ ///
+
+function getEpochMillis(dateStr) {
+  var r = /^\s*(\d{4})-(\d\d)-(\d\d)\s+(\d\d):(\d\d):(\d\d)\s+UTC\s*$/,
+    m = ("" + dateStr).match(r);
+  return (m) ? Date.UTC(m[1], m[2] - 1, m[3], m[4], m[5], m[6]) : undefined;
+};
 
 /// VIEW CONTROLLERS ///
 function hideAll() {
@@ -279,8 +272,8 @@ function getCognitoIdentityCredentials() {
       // console.log('AWS Secret Key: '+ AWS.config.credentials.secretAccessKey);
       // console.log('AWS Session Token: '+ AWS.config.credentials.sessionToken);
       switchToLoggedInView();
-      SignedIn(StartTime, StopTime, Sensor);
       scanAndStoreAllTableNames();
+      queryAndChartTableName(StartTime[0], StopTime[0]);
     }
   });
 }
@@ -315,11 +308,6 @@ function accessData() {
   //var StartTime = parseInt($("#startTimeInput").val());
   var TimeStart = $("#startTimeInput").val() + " 00:00:00 UTC"
   var TimeStop = $("#stopTimeInput").val() + " 00:00:00 UTC"
-  var getEpochMillis = function(dateStr) {
-    var r = /^\s*(\d{4})-(\d\d)-(\d\d)\s+(\d\d):(\d\d):(\d\d)\s+UTC\s*$/,
-      m = ("" + dateStr).match(r);
-    return (m) ? Date.UTC(m[1], m[2] - 1, m[3], m[4], m[5], m[6]) : undefined;
-  };
   StartTimes = getEpochMillis(TimeStart) / 1000
   StopTimes = getEpochMillis(TimeStop) / 1000
   if ($("#startTimeInput").val() == "" && $("#stopTimeInput").val() == "") {
@@ -477,29 +465,14 @@ function queryAndChartData2(tableName, sensorID, chartID, date) {
   });
 }
 
-function download_csv2(time, readings) {
-  var csv = 'Time,Reading\n';
-  var datas = [];
-  for (let i = 0; i < readings.length; i++) {
-    datas.push([time[i], readings[i]])
-  }
-  datas.forEach(function(row) {
-    csv += row.join(',');
-    csv += "\n";
-  });
-
-  var hiddenElement = document.createElement('a');
-  hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-  hiddenElement.target = '_blank';
-  hiddenElement.download = 'SensorData.csv';
-  hiddenElement.click();
-}
-
 function clearChart(chart) {
   if (chart != undefined) {
     chart.destroy();
   }
 }
+
+
+
 
 // Tell the user something
 function tellUser(message) {
@@ -660,70 +633,37 @@ function download_csv(time, readings) {
 
 /// RESETTING THINGS ///
 function deleteOldCharts2() {
-  Charts2.forEach(deleteExtra2);
-  Canvases2.forEach(deleteCanvas2);
+  Charts2.forEach(function(Chart) {
+    Chart.destroy()
+    Charts2 = []
+  });
+  Canvases2.forEach(function(Canvas) {
+    Canvas.remove()
+    Canvases2 = []
+  });
 }
 
 function deleteOldButtons2() {
-  buttonIdentity2.forEach(deleteExtraButtons2);
-}
-
-function deleteExtraButtons2(button) {
-  document.getElementById(button).remove();
-  buttonIdentity2 = []
-}
-
-function deleteExtra2(Chart) {
-  Chart.destroy()
-  Charts2 = []
-}
-
-function deleteCanvas2(Canvas) {
-  Canvas.remove()
-  Canvases2 = []
+  buttonIdentity2.forEach(function(button) {
+    document.getElementById(button).remove();
+    buttonIdentity2 = []
+  });
 }
 
 function deleteOldCharts() {
-  Charts.forEach(deleteExtra);
-  Canvases.forEach(deleteCanvas);
+  Charts.forEach(function(Chart) {
+    Chart.destroy()
+    Charts = []
+  });
+  Canvases.forEach(function(Canvas) {
+    Canvas.remove()
+    Canvases = []
+  });
 }
 
 function deleteOldButtons() {
-  buttonIdentity.forEach(deleteExtraButtons);
-}
-
-function deleteExtraButtons(button) {
-  document.getElementById(button).remove();
-  buttonIdentity = []
-}
-
-function deleteExtra(Chart) {
-  Chart.destroy()
-  Charts = []
-}
-
-function deleteCanvas(Canvas) {
-  Canvas.remove()
-  Canvases = []
-}
-
-
-
-
-function SignedIn(StartTime, StopTime, Sensor) {
-  timeout = 1
-  myVar = setTimeout(RunningTests, timeout, StartTime, StopTime, 0)
-  //for (var f = 0; f <= StartTime.length; f++) {
-  //  timeout = 500 * f
-  //  myVar = setTimeout(RunningTests, timeout, StartTime, StopTime, f)
-  //}
-}
-
-function RunningTests(StartTime, StopTime, f) {
-  try {
-    queryAndChartTableName(StartTime[f], StopTime[f])
-  } catch (err) {
-    document.getElementById("demo").innerHTML = err.message;
-    console.log("What?!?!")
-  }
+  buttonIdentity.forEach(function(button) {
+    document.getElementById(button).remove();
+    buttonIdentity = []
+  });
 }
