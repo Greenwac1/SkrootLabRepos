@@ -33,32 +33,29 @@ var timesBeingDisplayed;
 var displayChart;
 
 // Enter in each of the sensorIDs and start/stop times below. Ensure correct order when entering this.
-var TimeStart = ['2020-07-08 00:00:00 UTC'] //, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
+var timeStart = ['2020-07-08 00:00:00 UTC'] //, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
 // Input the day the sensors are given to the customer here
-var TimeStop = ['2020-09-10 00:00:00 UTC'] //, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
+var timeStop = ['2020-09-10 00:00:00 UTC'] //, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
 
-var StartTime = []
-var StopTime = []
+var startTime = []
+var stopTime = []
 
-var Charts = []
+var charts = []
 var buttonIdentity = []
-var Canvases = []
+var canvases = []
 
 // change
-var Charts2 = []
+var charts2 = []
 var buttonIdentity2 = []
-var Canvases2 = []
+var canvases2 = []
 
-for (var L = 0; L <= TimeStart.length; L++) {
-  StartTime.push(getEpochMillis(TimeStart[L]) / 1000)
-  StopTime.push(getEpochMillis(TimeStop[L]) / 1000)
+for (var L = 0; L <= timeStart.length; L++) {
+  startTime.push(getEpochMillis(timeStart[L]) / 1000)
+  stopTime.push(getEpochMillis(timeStop[L]) / 1000)
 }
-
 
 switchToRegisterView();
 getCurrentLoggedInSession();
-
-
 
 
 /// ************ FUNCTIONS ************ ///
@@ -137,6 +134,7 @@ function logIn() {
 
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: function(result) {
+        tellUser('Logged in!');
 
         $("#accessDataButton").hide();
         switchToLoggedInView();
@@ -156,6 +154,7 @@ function logIn() {
 // If user has logged in before, get the previous session so user doesn't need to log in again.
 function getCurrentLoggedInSession() {
 
+  tellUser("Loading...");
   userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
   cognitoUser = userPool.getCurrentUser();
   if (cognitoUser != null) {
@@ -271,7 +270,7 @@ function getCognitoIdentityCredentials() {
       // console.log('AWS Session Token: '+ AWS.config.credentials.sessionToken);
       switchToLoggedInView();
       scanAndStoreAllTableNames();
-      queryAndChartTableName(StartTime[0], StopTime[0]);
+      queryAndChartTableName(startTime[0], stopTime[0]);
     }
   });
 }
@@ -303,27 +302,28 @@ function accessData() {
   deleteOldButtons()
   //var tableName = "SkrootSensorTables";
   var sensorID = $("#sensorIdInput").val();
-  //var StartTime = parseInt($("#startTimeInput").val());
-  var TimeStart = $("#startTimeInput").val() + " 00:00:00 UTC"
-  var TimeStop = $("#stopTimeInput").val() + " 00:00:00 UTC"
-  StartTimes = getEpochMillis(TimeStart) / 1000
-  StopTimes = getEpochMillis(TimeStop) / 1000
+  //var startTime = parseInt($("#startTimeInput").val());
+  var timeStart = $("#startTimeInput").val() + " 00:00:00 UTC"
+  var timeStop = $("#stopTimeInput").val() + " 00:00:00 UTC"
+  startTimes = getEpochMillis(timeStart) / 1000
+  stopTimes = getEpochMillis(timeStop) / 1000
   if ($("#startTimeInput").val() == "" && $("#stopTimeInput").val() == "") {
-    var StopTimes = StopTime[0]
-    var StartTimes = StartTime[0]
+    var stopTimes = stopTime[0]
+    var startTimes = startTime[0]
   } else if ($("#stopTimeInput").val() == "") {
-    var StopTimes = StartTimes + 86400
+    var stopTimes = startTimes + 86400
   } else {
-    var StopTimes = StopTimes
+    var stopTimes = stopTimes
   }
-  if (Number.isInteger(StartTimes) && Number.isInteger(StopTimes) && sensorID != "") {
-    queryAndChartTableName2(StartTimes, StopTimes, sensorID)
+  if (Number.isInteger(startTimes) && Number.isInteger(stopTimes) && sensorID != "") {
+    tellUser("Loading...");
+    queryAndChartTableName2(startTimes, stopTimes, sensorID)
   } else {
     tellUser("Please enter valid values");
   }
 }
 
-function queryAndChartTableName2(StartTime, StopTime, sensorID) {
+function queryAndChartTableName2(startTime, stopTime, sensorID) {
   var chartID = parseInt((Math.random() * 1000000), 10)
   var docClient = new AWS.DynamoDB.DocumentClient();
   var table;
@@ -338,8 +338,8 @@ function queryAndChartTableName2(StartTime, StopTime, sensorID) {
       "#sid": "SensorID"
     },
     ExpressionAttributeValues: {
-      ":datStart": StartTime,
-      ":datStop": StopTime,
+      ":datStart": startTime,
+      ":datStop": stopTime,
       ":SensorID": sensorID
     }
   };
@@ -392,11 +392,11 @@ function queryAndChartData2(tableName, sensorID, chartID, date) {
       //var body2 = document.getElementById("head");
       var body2 = document.getElementById("loggedInView")
       body2.appendChild(canvas);
-      Canvases.push(canvas)
-      if (Canvases.length == 1) {
-        TopPad = 0
+      canvases.push(canvas)
+      if (canvases.length == 1) {
+        topPad = 0
       } else {
-        TopPad = 50
+        topPad = 50
       }
       var ctx1 = document.getElementById(chartID).getContext('2d');
       var chart = new Chart(ctx1, {
@@ -415,7 +415,7 @@ function queryAndChartData2(tableName, sensorID, chartID, date) {
             padding: {
               left: 0,
               right: 0,
-              top: TopPad,
+              top: topPad,
               bottom: 0
             },
           },
@@ -447,7 +447,7 @@ function queryAndChartData2(tableName, sensorID, chartID, date) {
           }
         }
       });
-      Charts.push(chart)
+      charts.push(chart)
       const chartElement = document.getElementById(chartID);
       const button = document.createElement('button');
       document.getElementById(button);
@@ -467,9 +467,6 @@ function clearChart(chart) {
     chart.destroy();
   }
 }
-
-
-
 
 // Tell the user something
 function tellUser(message) {
@@ -542,7 +539,7 @@ function queryAndChartData(tableName, sensorID, chartID, date) {
       // chart the data
       var body = document.getElementsByTagName("Body")[0];
       body.appendChild(canvas);
-      Canvases2.push(canvas)
+      canvases2.push(canvas)
       var ctx1 = document.getElementById(chartID).getContext('2d');
       var myChar1 = new Chart(ctx1, {
         type: 'line',
@@ -594,7 +591,7 @@ function queryAndChartData(tableName, sensorID, chartID, date) {
       });
 
 
-      Charts2.push(myChar1)
+      charts2.push(myChar1)
       const chartElement = document.getElementById(chartID);
       const button = document.createElement('button');
       document.getElementById(button);
@@ -630,13 +627,13 @@ function download_csv(time, readings) {
 
 /// RESETTING THINGS ///
 function deleteOldCharts2() {
-  Charts2.forEach(function(Chart) {
+  charts2.forEach(function(Chart) {
     Chart.destroy()
-    Charts2 = []
+    charts2 = []
   });
-  Canvases2.forEach(function(Canvas) {
+  canvases2.forEach(function(Canvas) {
     Canvas.remove()
-    Canvases2 = []
+    canvases2 = []
   });
 }
 
@@ -647,14 +644,15 @@ function deleteOldButtons2() {
   });
 }
 
+
 function deleteOldCharts() {
-  Charts.forEach(function(Chart) {
+  charts.forEach(function(Chart) {
     Chart.destroy()
-    Charts = []
+    charts = []
   });
-  Canvases.forEach(function(Canvas) {
+  canvases.forEach(function(Canvas) {
     Canvas.remove()
-    Canvases = []
+    canvases = []
   });
 }
 
