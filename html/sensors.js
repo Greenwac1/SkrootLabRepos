@@ -103,7 +103,6 @@ function logIn() {
 
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: function(result) {
-        tellUser('Logged in!');
 
         $("#accessDataButton").hide();
         switchToLoggedInView();
@@ -124,7 +123,6 @@ function logIn() {
 // If user has logged in before, get the previous session so user doesn't need to log in again.
 function getCurrentLoggedInSession() {
 
-  tellUser("Loading...");
   userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
   cognitoUser = userPool.getCurrentUser();
   if (cognitoUser != null) {
@@ -291,7 +289,6 @@ function accessData() {
     var StopTimes = StopTimes
   }
   if (Number.isInteger(StartTimes) && Number.isInteger(StopTimes) && sensorID != "") {
-    tellUser("Loading...");
     queryAndChartTableName2(StartTimes, StopTimes, sensorID)
   } else {
     tellUser("Please enter valid values");
