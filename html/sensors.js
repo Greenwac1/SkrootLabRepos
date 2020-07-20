@@ -1,11 +1,11 @@
 /*
-This is code adapted from this blog post:
-https://auxenta.com/blog_User_Authentication_and_Authorization_with_AWS_Cognito.php
-
-Primarily designed and written by Suminda De Silva
-Reframed by Adam Rice for Skroot Labs Inc.
+Based partially off code designed and written by Suminda De Silva
+  https://auxenta.com/blog_User_Authentication_and_Authorization_with_AWS_Cognito.php
+Rewritten by Adam Rice and Cameron Greenwalt - Skroot Labs Inc.
 */
 
+
+/// ************ VARIABLES ************ ///
 
 // AWS IDs
 var userPoolId = 'us-east-2_GfASc6bnY';
@@ -13,7 +13,7 @@ var clientId = '1t46ujgd3tl59vtutuvkmnah53';
 var region = 'us-east-2';
 var identityPoolId = 'us-east-2:d1ff2dd9-319a-4a15-af35-c60b1e0f088a';
 
-// other variables
+// other cognito variables
 var cognitoUser;
 var idToken;
 var userPool;
@@ -24,7 +24,7 @@ var poolData = {
   ClientId: clientId
 };
 
-
+// dynamoDB configuation vairables
 var docClient;
 var tableName = "SkrootSensorTables";
 var tableNamesStored;
@@ -32,9 +32,51 @@ var readingsBeingDisplayed;
 var timesBeingDisplayed;
 var displayChart;
 
+
+var j = 1
+var buttons = 0
+// Enter in each of the sensorIDs and start/stop times below. Ensure correct order when entering this.
+let TimeStart = ['2020-07-08 00:00:00 UTC'] //, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
+// Input the day the sensors are given to the customer here
+let TimeStop = ['2020-09-10 00:00:00 UTC'] //, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
+// Input the day the sensors are going to be returned here (if not sure input a few years into the future -> do not forget to change this!!!)
+let Sensor = ["33B178", "5EAD48", "BE2312"]
+// Input the SensorID given to the customer here
+
+var getEpochMillis = function(dateStr) {
+  var r = /^\s*(\d{4})-(\d\d)-(\d\d)\s+(\d\d):(\d\d):(\d\d)\s+UTC\s*$/,
+    m = ("" + dateStr).match(r);
+  return (m) ? Date.UTC(m[1], m[2] - 1, m[3], m[4], m[5], m[6]) : undefined;
+};
+StartTime = []
+StopTime = []
+Charts = []
+buttonIdentity = []
+Canvases = []
+Charts2 = []
+buttonIdentity2 = []
+Canvases2 = []
+LinkText = "Blah"
+for (var L = 0; L <= TimeStart.length; L++) {
+  StartTime.push(getEpochMillis(TimeStart[L]) / 1000)
+  StopTime.push(getEpochMillis(TimeStop[L]) / 1000)
+}
+
+var docClient = new AWS.DynamoDB.DocumentClient();
+var table;
+var tableName = "SkrootSensorTables";
+
+
+
 switchToRegisterView();
 getCurrentLoggedInSession();
 
+
+
+
+/// ************ FUNCTIONS ************ ///
+
+/// VIEW CONTROLLERS ///
 function hideAll() {
   tellUser("");
   $("#registerView").hide();
@@ -69,7 +111,6 @@ function switchToLoggedInView() {
 
 
 /// LOG IN AND OUT ///
-
 function logOut() {
   if (cognitoUser != null) {
     switchToSignInView();
@@ -119,7 +160,6 @@ function logIn() {
   }
 }
 
-
 // If user has logged in before, get the previous session so user doesn't need to log in again.
 function getCurrentLoggedInSession() {
 
@@ -148,6 +188,7 @@ function getCurrentLoggedInSession() {
   }
 
 }
+
 
 /// REGISTER USER ///
 // Starting point for user registration flow with input validation
@@ -211,7 +252,6 @@ function registerUser(email, username, password) {
 }
 
 
-
 /// GETTING CREDENTIALS ///
 // This method will get temporary credentials for AWS using the IdentityPoolId and the Id Token recieved from AWS Cognito authentication provider.
 function getCognitoIdentityCredentials() {
@@ -243,9 +283,9 @@ function getCognitoIdentityCredentials() {
   });
 }
 
+
 /// ACCESSING DYNAMODB ///
 // as soon as the user has logged in, scans all data table names
-
 function scanAndStoreAllTableNames() {
   console.log("Scanning all table names...");
   var params = {
@@ -294,58 +334,6 @@ function accessData() {
     tellUser("Please enter valid values");
   }
 }
-
-
-function deleteOldCharts2() {
-  Charts2.forEach(deleteExtra2);
-  Canvases2.forEach(deleteCanvas2);
-}
-
-function deleteOldButtons2() {
-  buttonIdentity2.forEach(deleteExtraButtons2);
-}
-
-function deleteExtraButtons2(button) {
-  document.getElementById(button).remove();
-  buttonIdentity2 = []
-}
-
-function deleteExtra2(Chart) {
-  Chart.destroy()
-  Charts2 = []
-}
-
-function deleteCanvas2(Canvas) {
-  Canvas.remove()
-  Canvases2 = []
-}
-
-function deleteOldCharts() {
-  Charts.forEach(deleteExtra);
-  Canvases.forEach(deleteCanvas);
-}
-
-function deleteOldButtons() {
-  buttonIdentity.forEach(deleteExtraButtons);
-}
-
-function deleteExtraButtons(button) {
-  document.getElementById(button).remove();
-  buttonIdentity = []
-
-}
-
-function deleteExtra(Chart) {
-  Chart.destroy()
-  Charts = []
-}
-
-function deleteCanvas(Canvas) {
-  Canvas.remove()
-  Canvases = []
-}
-
-
 
 function queryAndChartTableName2(StartTime, StopTime, sensorID) {
   var chartID = parseInt((Math.random() * 1000000), 10)
@@ -396,7 +384,6 @@ function queryAndChartData2(tableName, sensorID, chartID, date) {
     if (err) {
       console.log(JSON.stringify(err, undefined, 2));
     } else {
-      //console.log(JSON.stringify(data, undefined, 2));
 
       // refine the data to chart it
       times = [];
@@ -516,9 +503,6 @@ function tellUser(message) {
   $("#userOutput").empty();
   $("#userOutput").append(message + "</br>");
 }
-var docClient = new AWS.DynamoDB.DocumentClient();
-var table;
-var tableName = "SkrootSensorTables";
 
 function queryAndChartTableName(StartDate, StopDate) {
   var params = {
@@ -581,7 +565,8 @@ function queryAndChartData(tableName, sensorID, chartID, date) {
       }
       var canvas = document.createElement('canvas');
       canvas.id = chartID;
-      //var body=document.getElementById("loggedInView")
+
+      // chart the data
       var body = document.getElementsByTagName("Body")[0];
       body.appendChild(canvas);
       Canvases2.push(canvas)
@@ -634,6 +619,8 @@ function queryAndChartData(tableName, sensorID, chartID, date) {
           }
         }
       });
+
+
       Charts2.push(myChar1)
       const chartElement = document.getElementById(chartID);
       const button = document.createElement('button');
@@ -667,34 +654,58 @@ function download_csv(time, readings) {
   hiddenElement.click();
 }
 
-var j = 1
-var buttons = 0
-// Enter in each of the sensorIDs and start/stop times below. Ensure correct order when entering this.
-let TimeStart = ['2020-07-08 00:00:00 UTC'] //, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
-// Input the day the sensors are given to the customer here
-let TimeStop = ['2020-09-10 00:00:00 UTC'] //, '2020-07-04 00:00:00 UTC', '2020-07-04 00:00:00 UTC']
-// Input the day the sensors are going to be returned here (if not sure input a few years into the future -> do not forget to change this!!!)
-let Sensor = ["33B178", "5EAD48", "BE2312"]
-// Input the SensorID given to the customer here
 
-var getEpochMillis = function(dateStr) {
-  var r = /^\s*(\d{4})-(\d\d)-(\d\d)\s+(\d\d):(\d\d):(\d\d)\s+UTC\s*$/,
-    m = ("" + dateStr).match(r);
-  return (m) ? Date.UTC(m[1], m[2] - 1, m[3], m[4], m[5], m[6]) : undefined;
-};
-StartTime = []
-StopTime = []
-Charts = []
-buttonIdentity = []
-Canvases = []
-Charts2 = []
-buttonIdentity2 = []
-Canvases2 = []
-LinkText = "Blah"
-for (var L = 0; L <= TimeStart.length; L++) {
-  StartTime.push(getEpochMillis(TimeStart[L]) / 1000)
-  StopTime.push(getEpochMillis(TimeStop[L]) / 1000)
+/// RESETTING THINGS ///
+function deleteOldCharts2() {
+  Charts2.forEach(deleteExtra2);
+  Canvases2.forEach(deleteCanvas2);
 }
+
+function deleteOldButtons2() {
+  buttonIdentity2.forEach(deleteExtraButtons2);
+}
+
+function deleteExtraButtons2(button) {
+  document.getElementById(button).remove();
+  buttonIdentity2 = []
+}
+
+function deleteExtra2(Chart) {
+  Chart.destroy()
+  Charts2 = []
+}
+
+function deleteCanvas2(Canvas) {
+  Canvas.remove()
+  Canvases2 = []
+}
+
+function deleteOldCharts() {
+  Charts.forEach(deleteExtra);
+  Canvases.forEach(deleteCanvas);
+}
+
+function deleteOldButtons() {
+  buttonIdentity.forEach(deleteExtraButtons);
+}
+
+function deleteExtraButtons(button) {
+  document.getElementById(button).remove();
+  buttonIdentity = []
+}
+
+function deleteExtra(Chart) {
+  Chart.destroy()
+  Charts = []
+}
+
+function deleteCanvas(Canvas) {
+  Canvas.remove()
+  Canvases = []
+}
+
+
+
 
 function SignedIn(StartTime, StopTime, Sensor) {
   timeout = 1
