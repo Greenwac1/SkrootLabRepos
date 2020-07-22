@@ -57,32 +57,11 @@
       <a href="sensors.html" class="navbutton" role="button">Sensors</a>
     </div>
   </div>
-
-  <div id="registerView" class="View">
-    <h1 class="ViewHead">Register For An Account</h1>
-    <input id="emailInput" type="text" placeholder="Email" style="margin-bottom:20px;outline: 1px solid black" /></br>
-    <input id="newUsernameInput" type="text" placeholder="Username" style="margin-bottom:20px;outline: 1px solid black" /></br>
-    <input id="newPasswordInput" type="password" placeholder="Password" style="margin-bottom:20px;outline: 1px solid black" /></br>
-    <input id="confirmPasswordInput" type="password" placeholder="Confirm Password" style="margin-bottom:20px;outline: 1px solid black" /></br>
-
-    <input id="registerButton" type="button" value="Register" onclick="register()" style="margin-right:30px">
-    <input id="switchToSignIn" type="Button" value="Sign in" onclick="switchToSignInView()"></br>
-    <div id="userOutput" style="width: 700px; height: 10px; float: left; margin-top: 20px"></div>
-  </div>
-  <div id="userOutput" style="width: 700px; height: 10px; float: left; margin-top: 20px"></div></br>
-  <div id="verificationView" class="View">
-    <h1 class="ViewHead">Verify Your Account</h1>
-    <input id="verificationCodeInput" type="text" placeholder="Verification Code" style="outline: 1px solid black" /></br>
-    <input id="verifyCodeButton" type="button" value="Verify" onclick="verifyCode()" style="margin-top:20px"></br>
-    <div id="userOutput" style="width: 700px; height: 10px; float: left; margin-top: 20px"></div>
-  </div>
-
   <div id="signInView" class="View">
     <h1 class="ViewHead">Sign In</h1>
     <input id="usernameInput" type="text" placeholder="Username" style="float:left;margin-right:50px;outline: 1px solid black" />
     <input id="passwordInput" type="password" placeholder="Password" style="float:left;outline: 1px solid black" /></br></br></br>
     <input id="logInButton" type="Button" value="Log In" onclick="logIn()" style="float:left;margin-right:50px; padding-right:15px;padding-left:15px;margin-top:20px">
-    <input id="switchToRegister" type="Button" value="Register" onclick="switchToRegisterView()" style="float:left;margin-top:20px">
   </div>
 
   <div id="loggedInView" class="View">
@@ -106,7 +85,8 @@
       <input id="logOutButton" type="Button" value="Log Out" onclick="logOut()">
     </div></br>
     <div class="information">
-      <p>Note: To be able to load your data quickly and efficiently, each chart could possibly have more values than those shown. There is a maximum number of values that are able to be shown on each graph.</p>
+      <p>Note: In order to load your data more quickly and efficiently, there is a maximum number of values that are able to be shown on each graph.
+        Each chart could possibly have more values than those shown.</p>
     </div>
   </div>
 

@@ -27,7 +27,7 @@ var poolData = {
 // dynamoDB configuation vairables
 var docClient;
 var tableName = "SkrootSensorTables";
-var maximumChartValues = 200;
+var maximumChartValues = 300;
 
 // all results are accessed between earliestTime and latestTime
 var earliestTime = getEpochMillis('2020-07-08 00:00:00 UTC');
@@ -44,7 +44,7 @@ var allResultsElements = [
   // ...
 ];
 
-switchToRegisterView();
+switchToSignInView();
 getCurrentLoggedInSession();
 
 
@@ -62,16 +62,6 @@ function hideAll() {
 function switchToSignInView() {
   hideAll();
   $("#signInView").show();
-}
-
-function switchToRegisterView() {
-  hideAll();
-  $("#registerView").show();
-}
-
-function switchToVerificationView() {
-  hideAll();
-  $("#verificationView").show();
 }
 
 function switchToLoggedInView() {
@@ -161,67 +151,6 @@ function getCurrentLoggedInSession() {
     switchToSignInView();
   }
 
-}
-
-/// REGISTER USER ///
-// Starting point for user registration flow with input validation
-function register() {
-
-  switchToRegisterView();
-
-  if (!$('#emailInput').val() || !$('#newUsernameInput').val() || !$('#newPasswordInput').val() || !$('#confirmPasswordInput').val()) {
-    tellUser('Please fill all the fields!');
-  } else {
-    if ($('#newPasswordInput').val() == $('#confirmPasswordInput').val()) {
-      registerUser($('#emailInput').val(), $('#newUsernameInput').val(), $('#newPasswordInput').val());
-    } else {
-      tellUser('Confirm password failed!');
-    }
-
-  }
-}
-
-// Starting point for user verification using AWS Cognito with input validation
-function verifyCode() {
-  if (!$('#verificationCodeInput').val()) {
-    tellUser('Please enter verification field!');
-  } else {
-    cognitoUser.confirmRegistration($('#verificationCodeInput').val(), true, function(err, result) {
-      if (err) {
-        tellUser(err.message);
-      } else {
-        tellUser('Successfully verified code!');
-        switchToSignInView();
-      }
-
-    });
-  }
-}
-
-// User registration using AWS Cognito
-function registerUser(email, username, password) {
-  var attributeList = [];
-
-  var dataEmail = {
-    Name: 'email',
-    Value: email
-  };
-
-  var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
-
-  attributeList.push(attributeEmail);
-
-  userPool.signUp(username, password, attributeList, null, function(err, result) {
-    if (err) {
-      tellUser(err.message);
-    } else {
-      cognitoUser = result.user;
-      tellUser('Registration Successful!');
-      tellUser('Username is: ' + cognitoUser.getUsername());
-      tellUser('Please enter the verification code sent to your Email.');
-      switchToVerificationView();
-    }
-  });
 }
 
 /// GETTING CREDENTIALS ///
@@ -371,7 +300,7 @@ function queryAndChartData(tableName, sensorID, chartID, date, storageArray, ins
 
         // store readings
         var r = data["Items"][i]["Reading"];
-        var r2 = r.toFixed(5);
+        var r2 = r.toFixed(3);
         readings.push(r2);
       }
 
@@ -391,7 +320,8 @@ function queryAndChartData(tableName, sensorID, chartID, date, storageArray, ins
             data: readings,
             backgroundColor: 'rgba(0, 200, 255, 0.2)',
             borderColor: 'rgba(0, 200, 255, 1)',
-            borderWidth: 1
+            borderWidth: 1,
+            lineTension: .2
           }]
         },
         options: {
