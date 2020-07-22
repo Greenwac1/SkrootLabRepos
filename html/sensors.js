@@ -28,27 +28,22 @@ var poolData = {
 var docClient;
 var tableName = "SkrootSensorTables";
 var tableNamesStored;
-var readingsBeingDisplayed;
-var timesBeingDisplayed;
-var displayChart;
 
 // all results are accessed between earliestTime and latestTime
 var earliestTime = getEpochMillis('2020-07-08 00:00:00 UTC');
 var latestTime = getEpochMillis('2020-09-10 00:00:00 UTC');
 
-var searchResultsElements = {
-  // canvas : [chart, button]
+// 2D array holding the elements on the page under search results
+var searchResultsElements = [
+  // [chart, canvas, buttonId],
   // ...
-};
+];
+// 2D array holding the elements on the page under all results
+var allResultsElements = [
+  // [chart, canvas, buttonId],
+  // ...
+];
 
-var charts_searchResults = []
-var buttonIdentities_searchResults = []
-var canvases_searchResults = []
-
-// change
-var charts_allResults = []
-var buttonIdentities_allResults = []
-var canvases_allResults = []
 
 switchToRegisterView();
 getCurrentLoggedInSession();
@@ -104,7 +99,8 @@ function logOut() {
     var element = document.getElementById("head");
     element.innerHTML = ""
     var element = document.getElementById("")
-    deleteOldCharts(charts_allResults, canvases_allResults, buttonIdentities_allResults);
+    deleteOldCharts(allResultsElements);
+
   }
 }
 
@@ -294,7 +290,8 @@ function scanAndStoreAllTableNames() {
 // access data button; beginning of the flow to graph the data
 function accessData() {
   // delete old search results
-  deleteOldCharts(charts_searchResults, canvases_searchResults, buttonIdentities_searchResults);
+
+  deleteOldCharts(searchResultsElements);
 
   // access the user's inputs
   var sensorID = $("#sensorIdInput").val();
@@ -421,7 +418,7 @@ function queryAndChartData2(tableName, sensorID, chartID, date) {
       var view = document.getElementById("loggedInView")
       view.appendChild(canvas);
 
-      canvases_searchResults.push(canvas);
+
 
       if (searchResultsElements.length == 1) {
         topPad = 0
@@ -478,7 +475,7 @@ function queryAndChartData2(tableName, sensorID, chartID, date) {
         }
       });
 
-      charts_searchResults.push(chart)
+
 
       const chartElement = document.getElementById(chartID);
       const button = document.createElement('button');
@@ -490,9 +487,9 @@ function queryAndChartData2(tableName, sensorID, chartID, date) {
       button.id = buttonId
       chartElement.parentNode.insertBefore(button, chartElement.nextSibling);
 
-      buttonIdentities_searchResults.push(buttonId)
 
-      searchResultsElements[chart] = [canvas, buttonId];
+
+      searchResultsElements.push([chart, canvas, buttonId]);
     }
   });
 }
@@ -530,9 +527,9 @@ function queryAndChartData(tableName, sensorID, chartID, date) {
       // chart the data
       var body = document.getElementsByTagName("Body")[0];
       body.appendChild(canvas);
-      canvases_allResults.push(canvas)
+
       var ctx1 = document.getElementById(chartID).getContext('2d');
-      var myChar1 = new Chart(ctx1, {
+      var chart = new Chart(ctx1, {
         type: 'line',
         data: {
           labels: times,
@@ -582,7 +579,7 @@ function queryAndChartData(tableName, sensorID, chartID, date) {
       });
 
 
-      charts_allResults.push(myChar1)
+
       const chartElement = document.getElementById(chartID);
       const button = document.createElement('button');
       document.getElementById(button);
@@ -591,8 +588,11 @@ function queryAndChartData(tableName, sensorID, chartID, date) {
       button.addEventListener('click', download_csv.bind(this, times, readings));
       buttonId = parseInt((Math.random() * 1000000), 10)
       button.id = buttonId
-      buttonIdentities_allResults.push(buttonId)
+
       chartElement.parentNode.insertBefore(button, chartElement.nextSibling);
+
+
+      allResultsElements.push([chart, canvas, buttonId]);
     }
   });
 }
@@ -626,22 +626,16 @@ function download_csv(times, readings) {
 }
 
 // resetting the charts
-function deleteOldCharts(charts, canvases, buttonIdentities) {
-  // charts
-  charts.forEach(function(Chart) {
-    Chart.destroy()
-  });
-  charts = []
+function deleteOldCharts(chartArray) {
 
-  // canvases
-  canvases.forEach(function(Canvas) {
-    Canvas.remove()
+  chartArray.forEach(function(array) {
+    // delete the chart
+    array[0].destroy();
+    // delete the canvas
+    array[1].remove();
+    // delete the download button
+    var button = document.getElementById(array[2])
+    button ? button.remove() : null;
   });
-  canvases = []
-
-  // download buttons
-  buttonIdentities.forEach(function(button) {
-    document.getElementById(button).remove();
-  });
-  buttonIdentities = []
+  chartArray = []
 }
