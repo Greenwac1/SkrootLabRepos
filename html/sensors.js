@@ -261,7 +261,7 @@ function getCognitoIdentityCredentials() {
       switchToLoggedInView();
       scanAndStoreAllTableNames();
 
-      queryAndChartTableName(earliestTime, latestTime);
+      queryAndChart(earliestTime, latestTime, null, allResultsElements, 'body');
     }
   });
 }
@@ -290,7 +290,6 @@ function scanAndStoreAllTableNames() {
 // access data button; beginning of the flow to graph the data
 function accessData() {
   // delete old search results
-
   deleteOldCharts(searchResultsElements);
 
   // access the user's inputs
@@ -316,28 +315,40 @@ function accessData() {
   // make sure there is a sensorId, and that the start and stop times are numbers
   if (Number.isInteger(startTime) && Number.isInteger(stopTime) && sensorID != "") {
     tellUser("Loading...");
-    queryAndChartTableName2(startTime, stopTime, sensorID)
+    queryAndChart(startTime, stopTime, sensorID, searchResultsElements, 'loggedInView');
   } else {
     tellUser("Please enter valid values");
   }
 }
 
-function queryAndChartTableName2(startTime, stopTime, sensorID) {
+// beginning of the flow to chart data — leave sensorID as null for all results between start and stop time
+// stores the created elements in storageArray in format [chart, canvas, buttonId]
+// inserts the element into the element with id as insertionPointId
+function queryAndChart(startTime, stopTime, sensorID, storageArray, insertionPointId) {
+
+  var filterExp;
+  var attributeVals = {
+    ":datStart": startTime,
+    ":datStop": stopTime
+  }
+
+  if (sensorID != null) {
+    filterExp = "#sid = :SensorID and #tim between :datStart and :datStop";
+    attributeVals[":SensorID"] = sensorID;
+  } else {
+    filterExp = "#tim between :datStart and :datStop";
+  }
 
   var params = {
     TableName: tableName,
     ProjectionExpression: "#tabn, #tim, #sid",
-    FilterExpression: "#sid = :SensorID and #tim between :datStart and :datStop",
+    FilterExpression: filterExp,
     ExpressionAttributeNames: {
       "#tim": "Timestamp",
       "#tabn": "TableName",
       "#sid": "SensorID"
     },
-    ExpressionAttributeValues: {
-      ":datStart": startTime,
-      ":datStop": stopTime,
-      ":SensorID": sensorID
-    }
+    ExpressionAttributeValues: attributeVals
   };
   docClient.scan(params, function(err, data) {
     if (err) {
@@ -348,152 +359,15 @@ function queryAndChartTableName2(startTime, stopTime, sensorID) {
         var dataTable = data["Items"][i]["TableName"];
         var dataSensor = data["Items"][i]["SensorID"];
         var chartID = parseInt((Math.random() * 1000000), 10);
-        queryAndChartData2(dataTable, dataSensor, chartID, dataTime);
-      }
-    };
-  });
-};
-function queryAndChartTableName(StartDate, StopDate) {
-  var params = {
-    TableName: tableName,
-    ProjectionExpression: "#tabn, #tim, #sid",
-    FilterExpression: "#tim between :datStart and :datStop",
-    ExpressionAttributeNames: {
-      "#tim": "Timestamp",
-      "#tabn": "TableName",
-      "#sid": "SensorID"
-    },
-    ExpressionAttributeValues: {
-      ":datStart": StartDate,
-      ":datStop": StopDate,
-    }
-  };
-  docClient.scan(params, function(err, data) {
-    if (err) {
-      console.log(JSON.stringify(err, undefined, 2));
-    } else {
-      for (var i = 0; i <= data["Items"].length - 1; i++) {
-        var dataTime = data["Items"][i]["Timestamp"];
-        var dataTable = data["Items"][i]["TableName"];
-        var dataSensor = data["Items"][i]["SensorID"];
-        var chartID = parseInt((Math.random() * 1000000), 10);
-        queryAndChartData(dataTable, dataSensor, chartID, dataTime);
+        //******
+        queryAndChartData(dataTable, dataSensor, chartID, dataTime, storageArray, insertionPointId);
+        //******//
       }
     };
   });
 };
 
-
-function queryAndChartData2(tableName, sensorID, chartID, date) {
-  var d = new Date(0);
-  d.setUTCSeconds(date + 36000)
-  dates = d.toString()
-  date = dates.substring(0, 21) + ' UTC'
-  var params = {
-    TableName: tableName
-  };
-
-  docClient.scan(params, function(err, data) {
-    if (err) {
-      console.log(JSON.stringify(err, undefined, 2));
-    } else {
-
-      // refine the data to chart it
-      times = [];
-      for (var i = 0; i < data["Items"].length; i++) {
-        var t = data["Items"][i]["Timestamp"];
-        var t2 = t.toFixed(3)
-        times.push(t2);
-      }
-
-      readings = [];
-      for (var i = 0; i < data["Items"].length; i++) {
-        var r = data["Items"][i]["Reading"];
-        var r2 = r.toFixed(3)
-        readings.push(r2);
-      }
-      var canvas = document.createElement('canvas');
-      canvas.id = chartID;
-
-      var view = document.getElementById("loggedInView")
-      view.appendChild(canvas);
-
-
-
-      if (searchResultsElements.length == 1) {
-        topPad = 0
-      } else {
-        topPad = 50
-      }
-      var ctx1 = document.getElementById(chartID).getContext('2d');
-      var chart = new Chart(ctx1, {
-        type: 'line',
-        data: {
-          labels: times,
-          datasets: [{
-            data: readings,
-            backgroundColor: 'rgba(0, 200, 255, 0.2)',
-            borderColor: 'rgba(0, 200, 255, 1)',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          layout: {
-            padding: {
-              left: 0,
-              right: 0,
-              top: topPad,
-              bottom: 0
-            },
-          },
-          scales: {
-            yAxes: [{
-              scaleLabel: {
-                display: true,
-                fontSize: 20,
-                labelString: "Frequency (MHz)"
-              },
-            }],
-            xAxes: [{
-              scaleLabel: {
-                display: true,
-                fontSize: 20,
-                labelString: "Time (hours)"
-              },
-            }]
-          },
-          legend: {
-            display: false
-          },
-          title: {
-            display: true,
-            text: "SensorID: " + sensorID + "            Start Date: " + date,
-            position: "top",
-            fontSize: 16,
-            padding: 20
-          }
-        }
-      });
-
-
-
-      const chartElement = document.getElementById(chartID);
-      const button = document.createElement('button');
-      document.getElementById(button);
-      button.padding = "100px 100px 100px 100px";
-      button.innerHTML = "Download CSV File"
-      button.addEventListener('click', download_csv.bind(this, times, readings));
-      buttonId = parseInt((Math.random() * 1000000), 10)
-      button.id = buttonId
-      chartElement.parentNode.insertBefore(button, chartElement.nextSibling);
-
-
-
-      searchResultsElements.push([chart, canvas, buttonId]);
-    }
-  });
-}
-function queryAndChartData(tableName, sensorID, chartID, date) {
+function queryAndChartData(tableName, sensorID, chartID, date, storageArray, insertionPointId) {
   var d = new Date(0);
   d.setUTCSeconds(date + 36000)
   dates = d.toString()
@@ -525,10 +399,10 @@ function queryAndChartData(tableName, sensorID, chartID, date) {
       canvas.id = chartID;
 
       // chart the data
-      var body = document.getElementsByTagName("Body")[0];
-      body.appendChild(canvas);
+      var view = document.getElementById(insertionPointId);
+      view.appendChild(canvas);
 
-      var ctx1 = document.getElementById(chartID).getContext('2d');
+      var ctx1 = canvas.getContext('2d');
       var chart = new Chart(ctx1, {
         type: 'line',
         data: {
@@ -578,8 +452,6 @@ function queryAndChartData(tableName, sensorID, chartID, date) {
         }
       });
 
-
-
       const chartElement = document.getElementById(chartID);
       const button = document.createElement('button');
       document.getElementById(button);
@@ -588,15 +460,12 @@ function queryAndChartData(tableName, sensorID, chartID, date) {
       button.addEventListener('click', download_csv.bind(this, times, readings));
       buttonId = parseInt((Math.random() * 1000000), 10)
       button.id = buttonId
-
       chartElement.parentNode.insertBefore(button, chartElement.nextSibling);
 
-
-      allResultsElements.push([chart, canvas, buttonId]);
+      storageArray.push([chart, canvas, buttonId]);
     }
   });
 }
-
 
 
 
