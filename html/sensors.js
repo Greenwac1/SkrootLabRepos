@@ -32,6 +32,7 @@ var maximumChartValues = 300;
 // all results are accessed between earliestTime and latestTime
 var earliestTime = getEpochMillis('2020-07-08 00:00:00 UTC');
 var latestTime = getEpochMillis('2020-09-10 00:00:00 UTC');
+var nextChartId = 0;
 
 // 2D array holding the elements on the page under search results
 var searchResultsElements = [
@@ -224,7 +225,6 @@ function accessData() {
 // stores the created elements in storageArray in format [chart, canvas, buttonId]
 // inserts the element into the element with id as insertionPointId
 function queryAndChart(startTime, stopTime, sensorID, storageArray, insertionPointId) {
-
   var filterExp;
   var attributeVals = {
     ":datStart": startTime,
@@ -257,15 +257,12 @@ function queryAndChart(startTime, stopTime, sensorID, storageArray, insertionPoi
         var dataTime = data["Items"][i]["Timestamp"];
         var dataTable = data["Items"][i]["TableName"];
         var dataSensor = data["Items"][i]["SensorID"];
-        var chartID = parseInt((Math.random() * 1000000), 10);
-        //******
-        queryAndChartData(dataTable, dataSensor, chartID, dataTime, storageArray, insertionPointId);
-        //******//
+        queryAndChartData(dataTable, dataSensor, dataTime, storageArray, insertionPointId);
       }
     };
   });
 };
-function queryAndChartData(tableName, sensorID, chartID, date, storageArray, insertionPointId) {
+function queryAndChartData(tableName, sensorID, date, storageArray, insertionPointId) {
   var d = new Date(0);
   d.setUTCSeconds(date + 36000)
   dates = d.toString()
@@ -278,7 +275,6 @@ function queryAndChartData(tableName, sensorID, chartID, date, storageArray, ins
     if (err) {
       console.log(JSON.stringify(err, undefined, 2));
     } else {
-
       // refine the data to chart it:
 
       // if the data has lots and lots of points, set a maximum
@@ -304,8 +300,9 @@ function queryAndChartData(tableName, sensorID, chartID, date, storageArray, ins
         readings.push(r2);
       }
 
+      nextChartId++;
       var canvas = document.createElement('canvas');
-      canvas.id = chartID;
+      canvas.id = nextChartId;
 
       // chart the data
       var view = document.getElementById(insertionPointId);
@@ -362,15 +359,14 @@ function queryAndChartData(tableName, sensorID, chartID, date, storageArray, ins
         }
       });
 
-      const chartElement = document.getElementById(chartID);
       const button = document.createElement('button');
-      document.getElementById(button);
       button.padding = "100px 100px 100px 100px";
       button.innerHTML = "Download CSV File"
       button.addEventListener('click', download_csv.bind(this, times, readings));
-      buttonId = parseInt((Math.random() * 1000000), 10)
+      buttonId = nextChartId + "b";
       button.id = buttonId
-      chartElement.parentNode.insertBefore(button, chartElement.nextSibling);
+
+      canvas.parentNode.insertBefore(button, canvas.nextSibling);
 
       storageArray.push([chart, canvas, buttonId]);
     }
