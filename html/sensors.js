@@ -28,6 +28,7 @@ var poolData = {
 var docClient;
 var tableName = "SkrootSensorTables";
 var tableNamesStored;
+var maximumChartValues = 300;
 
 // all results are accessed between earliestTime and latestTime
 var earliestTime = getEpochMillis('2020-07-08 00:00:00 UTC');
@@ -44,18 +45,11 @@ var allResultsElements = [
   // ...
 ];
 
-
 switchToRegisterView();
 getCurrentLoggedInSession();
 
 
 /// ************ FUNCTIONS ************ ///
-
-function getEpochMillis(dateStr) {
-  var r = /^\s*(\d{4})-(\d\d)-(\d\d)\s+(\d\d):(\d\d):(\d\d)\s+UTC\s*$/,
-    m = ("" + dateStr).match(r);
-  return (m) ? Date.UTC(m[1], m[2] - 1, m[3], m[4], m[5], m[6]) / 1000 : undefined;
-};
 
 /// VIEW CONTROLLERS ///
 function hideAll() {
@@ -88,7 +82,6 @@ function switchToLoggedInView() {
   element.innerHTML = "All Results"
   docClient = new AWS.DynamoDB.DocumentClient();
 }
-
 
 /// LOG IN AND OUT ///
 function logOut() {
@@ -171,7 +164,6 @@ function getCurrentLoggedInSession() {
 
 }
 
-
 /// REGISTER USER ///
 // Starting point for user registration flow with input validation
 function register() {
@@ -233,7 +225,6 @@ function registerUser(email, username, password) {
   });
 }
 
-
 /// GETTING CREDENTIALS ///
 // This method will get temporary credentials for AWS using the IdentityPoolId and the Id Token recieved from AWS Cognito authentication provider.
 function getCognitoIdentityCredentials() {
@@ -265,7 +256,6 @@ function getCognitoIdentityCredentials() {
     }
   });
 }
-
 
 /// ACCESSING DYNAMODB ///
 // as soon as the user has logged in, scans all data table names
@@ -366,7 +356,6 @@ function queryAndChart(startTime, stopTime, sensorID, storageArray, insertionPoi
     };
   });
 };
-
 function queryAndChartData(tableName, sensorID, chartID, date, storageArray, insertionPointId) {
   var d = new Date(0);
   d.setUTCSeconds(date + 36000)
@@ -381,20 +370,31 @@ function queryAndChartData(tableName, sensorID, chartID, date, storageArray, ins
       console.log(JSON.stringify(err, undefined, 2));
     } else {
 
-      // refine the data to chart it
-      times = [];
-      for (var i = 0; i < data["Items"].length; i++) {
-        var t = data["Items"][i]["Timestamp"];
-        var t2 = t.toFixed(3)
-        times.push(t2);
+      // refine the data to chart it:
+
+      // if the data has lots and lots of points, set a maximum
+      var simplifyFactor = data["Items"].length / maximumChartValues;
+      if (simplifyFactor < 1) {
+          simplifyFactor = 1;
       }
 
+      // obtain the times and readings
+      times = [];
       readings = [];
-      for (var i = 0; i < data["Items"].length; i++) {
+      for (var floatingPointIndex = 0; floatingPointIndex < data["Items"].length; floatingPointIndex += simplifyFactor) {
+        // usable index
+        var i = Math.floor(floatingPointIndex);
+        // store times
+        var t = data["Items"][i]["Timestamp"];
+        var t2 = t.toFixed(3);
+        times.push(t2);
+
+        // store readings
         var r = data["Items"][i]["Reading"];
-        var r2 = r.toFixed(3)
+        var r2 = r.toFixed(5);
         readings.push(r2);
       }
+
       var canvas = document.createElement('canvas');
       canvas.id = chartID;
 
@@ -467,8 +467,6 @@ function queryAndChartData(tableName, sensorID, chartID, date, storageArray, ins
   });
 }
 
-
-
 // Tell the user something
 function tellUser(message) {
   $("#userOutput").empty();
@@ -508,3 +506,9 @@ function deleteOldCharts(chartArray) {
   });
   chartArray = []
 }
+
+function getEpochMillis(dateStr) {
+  var r = /^\s*(\d{4})-(\d\d)-(\d\d)\s+(\d\d):(\d\d):(\d\d)\s+UTC\s*$/,
+    m = ("" + dateStr).match(r);
+  return (m) ? Date.UTC(m[1], m[2] - 1, m[3], m[4], m[5], m[6]) / 1000 : undefined;
+};
