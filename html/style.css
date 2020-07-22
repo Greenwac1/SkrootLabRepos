@@ -30,7 +30,13 @@
   display: block;
 }
 
-@media only screen and (max-width: 1100px) {
+.information {
+  color: grey;
+  margin: 40pt 0 0 0;
+  width: 50%;
+}
+
+@media only screen and (max-width: 1200px) {
   .LogOutButton {
     float: left;
     line-height: 20px;

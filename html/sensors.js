@@ -27,8 +27,7 @@ var poolData = {
 // dynamoDB configuation vairables
 var docClient;
 var tableName = "SkrootSensorTables";
-var tableNamesStored;
-var maximumChartValues = 300;
+var maximumChartValues = 200;
 
 // all results are accessed between earliestTime and latestTime
 var earliestTime = getEpochMillis('2020-07-08 00:00:00 UTC');
@@ -250,7 +249,7 @@ function getCognitoIdentityCredentials() {
       // console.log('AWS Secret Key: '+ AWS.config.credentials.secretAccessKey);
       // console.log('AWS Session Token: '+ AWS.config.credentials.sessionToken);
       switchToLoggedInView();
-      scanAndStoreAllTableNames();
+      $("#accessDataButton").show();
 
       queryAndChart(earliestTime, latestTime, null, allResultsElements, 'body');
     }
@@ -258,25 +257,6 @@ function getCognitoIdentityCredentials() {
 }
 
 /// ACCESSING DYNAMODB ///
-// as soon as the user has logged in, scans all data table names
-function scanAndStoreAllTableNames() {
-  console.log("Scanning all table names...");
-  var params = {
-    TableName: tableName
-  }
-
-  docClient.scan(params, function(err, data) {
-    if (err) {
-      console.log(err);
-      tellUser("There was an error accessing the database.")
-    } else {
-      tableNamesStored = data;
-      $("#accessDataButton").show();
-      tellUser("Connection established!");
-    }
-  });
-}
-
 // access data button; beginning of the flow to graph the data
 function accessData() {
   // delete old search results
