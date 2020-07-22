@@ -1,4 +1,4 @@
-latestTime/*
+/*
 Based partially off code designed and written by Suminda De Silva
   https://auxenta.com/blog_User_Authentication_and_Authorization_with_AWS_Cognito.php
 Rewritten by Adam Rice and Cameron Greenwalt - Skroot Labs Inc.
