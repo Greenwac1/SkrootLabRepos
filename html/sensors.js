@@ -393,7 +393,6 @@ function queryAndChartData(tableName, sensorID, date, storageArray, insertionPoi
 function finishedLoadingChart() {
   loadTrackingNumber++;
   if (loadTrackingNumber >= chartsBeingLoaded) {
-    console.log("FINISHED LOADING");
     $("#accessDataButton").show();
   }
 }
