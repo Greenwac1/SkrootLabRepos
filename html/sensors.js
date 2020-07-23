@@ -257,10 +257,12 @@ function queryAndChart(startTime, stopTime, sensorID, storageArray, insertionPoi
     if (err) {
       console.log(JSON.stringify(err, undefined, 2));
     } else {
-      console.log("Number of charts being graphed: " + (data["Items"].length));
+      // tracks when the charts have been loaded, shows the search button again once all charts are finished
       chartsBeingLoaded = data["Items"].length;
       loadTrackingNumber = 0;
       $("#accessDataButton").hide();
+
+      // goes through all the data tables, charts each table
       for (var i = 0; i <= data["Items"].length - 1; i++) {
         var dataTime = data["Items"][i]["Timestamp"];
         var dataTable = data["Items"][i]["TableName"];
@@ -390,6 +392,8 @@ function queryAndChartData(tableName, sensorID, date, storageArray, insertionPoi
   });
 }
 
+// called once a chart has been finished loading. tracks the total number of charts loaded compared to the number of charts that need to be loaded.
+// if this is the last chart in the scan that was loaded, the search button is shown.
 function finishedLoadingChart() {
   loadTrackingNumber++;
   if (loadTrackingNumber >= chartsBeingLoaded) {
