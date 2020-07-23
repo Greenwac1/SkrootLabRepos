@@ -32,7 +32,10 @@ var maximumChartValues = 300;
 // all results are accessed between earliestTime and latestTime
 var earliestTime = getEpochMillis('2020-07-08 00:00:00 UTC');
 var latestTime = getEpochMillis('2020-09-10 00:00:00 UTC');
-var nextChartId = 0;
+var nextCanvasId = 0;
+
+var chartsBeingLoaded;
+var loadTrackingNumber;
 
 // 2D array holding the elements on the page under search results
 var searchResultsElements = [
@@ -179,7 +182,7 @@ function getCognitoIdentityCredentials() {
       // console.log('AWS Secret Key: '+ AWS.config.credentials.secretAccessKey);
       // console.log('AWS Session Token: '+ AWS.config.credentials.sessionToken);
       switchToLoggedInView();
-      $("#accessDataButton").show();
+      //$("#accessDataButton").show();
 
       queryAndChart(earliestTime, latestTime, null, allResultsElements, 'body');
     }
@@ -211,7 +214,6 @@ function accessData() {
     stopTime = startTime + 86400;
   }
 
-
   // make sure there is a sensorId, and that the start and stop times are numbers
   if (Number.isInteger(startTime) && Number.isInteger(stopTime) && sensorID != "") {
     tellUser("Loading...");
@@ -225,6 +227,7 @@ function accessData() {
 // stores the created elements in storageArray in format [chart, canvas, buttonId]
 // inserts the element into the element with id as insertionPointId
 function queryAndChart(startTime, stopTime, sensorID, storageArray, insertionPointId) {
+  // setting the expressions based on which arguments are given
   var filterExp;
   var attributeVals = {
     ":datStart": startTime,
@@ -238,6 +241,7 @@ function queryAndChart(startTime, stopTime, sensorID, storageArray, insertionPoi
     filterExp = "#tim between :datStart and :datStop";
   }
 
+  // setting parameters accordingly
   var params = {
     TableName: tableName,
     ProjectionExpression: "#tabn, #tim, #sid",
@@ -253,20 +257,26 @@ function queryAndChart(startTime, stopTime, sensorID, storageArray, insertionPoi
     if (err) {
       console.log(JSON.stringify(err, undefined, 2));
     } else {
+      console.log("Number of charts being graphed: " + (data["Items"].length));
+      chartsBeingLoaded = data["Items"].length;
+      loadTrackingNumber = 0;
+      $("#accessDataButton").hide();
       for (var i = 0; i <= data["Items"].length - 1; i++) {
         var dataTime = data["Items"][i]["Timestamp"];
         var dataTable = data["Items"][i]["TableName"];
         var dataSensor = data["Items"][i]["SensorID"];
+
         queryAndChartData(dataTable, dataSensor, dataTime, storageArray, insertionPointId);
       }
     };
   });
 };
+
 function queryAndChartData(tableName, sensorID, date, storageArray, insertionPointId) {
   var d = new Date(0);
-  d.setUTCSeconds(date + 36000)
-  dates = d.toString()
-  date = dates.substring(0, 21) + ' UTC'
+  d.setUTCSeconds(date + 36000);
+  dates = d.toString();
+  date = dates.substring(0, 21) + ' UTC';
   var params = {
     TableName: tableName
   };
@@ -275,19 +285,24 @@ function queryAndChartData(tableName, sensorID, date, storageArray, insertionPoi
     if (err) {
       console.log(JSON.stringify(err, undefined, 2));
     } else {
-      // refine the data to chart it:
+      // refining and charting the data //
 
-      // if the data has lots and lots of points, set a maximum
+      // if the data has lots and lots of points, set a maximum number of
       var simplifyFactor = data["Items"].length / maximumChartValues;
       if (simplifyFactor < 1) {
-          simplifyFactor = 1;
+        simplifyFactor = 1;
       }
 
       // obtain the times and readings
       times = [];
       readings = [];
       for (var floatingPointIndex = 0; floatingPointIndex < data["Items"].length; floatingPointIndex += simplifyFactor) {
-        // usable index
+        /*
+        if we have a max of 10 points, with 12 points being charted the sequence will go:
+          - floatingPointIndex: 0, 1.2, 2.4, 3.6, 4.8, 6.0, ...
+          - useable index (i):  0, 1,   2,   3,   4,   6, ...
+        */
+        // useable index
         var i = Math.floor(floatingPointIndex);
         // store times
         var t = data["Items"][i]["Timestamp"];
@@ -300,9 +315,9 @@ function queryAndChartData(tableName, sensorID, date, storageArray, insertionPoi
         readings.push(r2);
       }
 
-      nextChartId++;
+      nextCanvasId++;
       var canvas = document.createElement('canvas');
-      canvas.id = nextChartId;
+      canvas.id = nextCanvasId;
 
       // chart the data
       var view = document.getElementById(insertionPointId);
@@ -363,14 +378,24 @@ function queryAndChartData(tableName, sensorID, date, storageArray, insertionPoi
       button.padding = "100px 100px 100px 100px";
       button.innerHTML = "Download CSV File"
       button.addEventListener('click', download_csv.bind(this, times, readings));
-      buttonId = nextChartId + "b";
+      buttonId = nextCanvasId + "b";
       button.id = buttonId
 
       canvas.parentNode.insertBefore(button, canvas.nextSibling);
 
       storageArray.push([chart, canvas, buttonId]);
+
+      finishedLoadingChart();
     }
   });
+}
+
+function finishedLoadingChart() {
+  loadTrackingNumber++;
+  if (loadTrackingNumber >= chartsBeingLoaded) {
+    console.log("FINISHED LOADING");
+    $("#accessDataButton").show();
+  }
 }
 
 // Tell the user something
@@ -413,6 +438,7 @@ function deleteOldCharts(chartArray) {
   chartArray = []
 }
 
+//
 function getEpochMillis(dateStr) {
   var r = /^\s*(\d{4})-(\d\d)-(\d\d)\s+(\d\d):(\d\d):(\d\d)\s+UTC\s*$/,
     m = ("" + dateStr).match(r);
