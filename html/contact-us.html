@@ -2,6 +2,90 @@
 <html lang="en" dir="ltr">
 
 <head>
+  <title>Skroot Lab</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    function openNav() {
+      document.getElementById("sideNav").style.width = "100%";
+    }
+
+    function closeNav() {
+      document.getElementById("sideNav").style.width = "0";
+    }
+  </script>
+  <meta charset="utf-8">
+</head>
+
+<p id="sideNavOpenButton" onclick="openNav()">&#9776;</p>
+<div id="sideNav">
+  <a href="javascript:void(0)" class="closeNav" onclick="closeNav()">く</a>
+  <a href="home.html">Home</a>
+  <a href="technology.html">Technology</a>
+  <a href="team.html">Team</a>
+  <a href="news.html">News</a>
+  <a href="contact-us.html">Contact Us</a>
+  <a href="sensors.html">Sensors</a>
+</div>
+
+<body overflow-y:auto>
+  <div id="largeNav">
+    <img src="Images/logo.png" alt="SKROOTLAB" />
+    <a href="home.html" role="primary">Home</a>
+    <a href="technology.html" role="button">Technology</a>
+    <a href="team.html" role="button">Team</a>
+    <a href="news.html" role="button">News</a>
+    <a href="contact-us.html" role="button" style="border-bottom: 10px solid rgb(51, 51, 153)">Contact Us</a>
+    <a href="sensors.html" role="button">Sensors</a>
+  </div>
+
+
+  <div id="contactUs" class="genericBody">
+    <form method="post" enctype=”multipart/form-data” action="mailto:greenwalt@skrootlab.com">
+      <h2>Questions? Drop us a note...</h2>
+
+      <label for="name">Name</label></br>
+      <input type="text" id="fname" name="fname" placeholder="First">
+      <input type="text" id="lname" name="lname" placeholder="Last"></br>
+
+      <label for="email">Email</label></br>
+      <input type="text" id="email" name="email" placeholder="email@emample.com"></br>
+
+      <label for="message">Comment</label></br>
+      <textarea area-required="true" id="Comment"></textarea></br>
+
+      <input type="button" value="Submit">
+    </form>
+  </div>
+
+
+  <div id="map" class="genericBody">
+    <h2>Visit us in Ames,IA</h2>
+    <p>1030 Carver Co-Lab (CCL)</p></br>
+    <iframe class="resp-iframe" allowfullscreen="true"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2963.5017493865626!2d-93.65296078420681!3d42.03241996372117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87ee70baf3619d9b%3A0xb7ae65933ab95b1c!2sRoy+J.+Carver+Co-Lab%2C+1111+WOI+Rd%2C+Ames%2C+IA+50011!5e0!3m2!1sen!2sus!4v1563816042520!5m2!1sen!2sus">
+    </iframe>
+  </div>
+
+
+  <footer>
+    <p>Copyright 2020</p>
+    <a href="https://twitter.com/skrootlab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @skrootlab</a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></br>
+    <a href="mailto:info@skrootlab.com" target="_blank" alt="Mail" class="btn btn-primary" role="button">Email Us</a>
+  </footer>
+</body>
+
+</html>
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <meta charset="utf-8">
   <title>Contact Us</title>
@@ -338,4 +422,4 @@
   </footer>
 </body>
 
-</html>
+</html> -->

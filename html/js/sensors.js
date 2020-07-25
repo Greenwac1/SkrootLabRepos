@@ -71,8 +71,8 @@ function switchToSignInView() {
 function switchToLoggedInView() {
   hideAll();
   $("#loggedInView").show();
-  var element = document.getElementById("head");
-  element.innerHTML = "All Results"
+  // var element = document.getElementById("head");
+  // element.innerHTML = "All Results"
   docClient = new AWS.DynamoDB.DocumentClient();
 }
 
@@ -82,9 +82,6 @@ function logOut() {
     switchToSignInView();
     cognitoUser.signOut();
     tellUser('Logged out!');
-    var element = document.getElementById("head");
-    element.innerHTML = ""
-    var element = document.getElementById("")
     deleteOldCharts(allResultsElements);
 
   }
@@ -184,7 +181,7 @@ function getCognitoIdentityCredentials() {
       switchToLoggedInView();
       //$("#accessDataButton").show();
 
-      queryAndChart(earliestTime, latestTime, null, allResultsElements, 'body');
+      queryAndChart(earliestTime, latestTime, null, allResultsElements, 'allResultsSection');
     }
   });
 }
@@ -217,7 +214,7 @@ function accessData() {
   // make sure there is a sensorId, and that the start and stop times are numbers
   if (Number.isInteger(startTime) && Number.isInteger(stopTime) && sensorID != "") {
     tellUser("Loading...");
-    queryAndChart(startTime, stopTime, sensorID, searchResultsElements, 'loggedInView');
+    queryAndChart(startTime, stopTime, sensorID, searchResultsElements, 'searchResultsSection');
   } else {
     tellUser("Please enter valid values");
   }
@@ -282,10 +279,11 @@ function queryAndChartData(tableName, sensorID, date, storageArray, insertionPoi
   var params = {
     TableName: tableName
   };
+  console.log(params);
 
   docClient.scan(params, function(err, data) {
     if (err) {
-      console.log(JSON.stringify(err, undefined, 2));
+      console.log("Unable to find the data!");
     } else {
       // refining and charting the data //
 
@@ -320,6 +318,7 @@ function queryAndChartData(tableName, sensorID, date, storageArray, insertionPoi
       nextCanvasId++;
       var canvas = document.createElement('canvas');
       canvas.id = nextCanvasId;
+      canvas.className = "chart";
 
       // chart the data
       var view = document.getElementById(insertionPointId);
@@ -381,7 +380,7 @@ function queryAndChartData(tableName, sensorID, date, storageArray, insertionPoi
       button.innerHTML = "Download CSV File"
       button.addEventListener('click', download_csv.bind(this, times, readings));
       buttonId = nextCanvasId + "b";
-      button.id = buttonId
+      button.id = buttonId;
 
       canvas.parentNode.insertBefore(button, canvas.nextSibling);
 

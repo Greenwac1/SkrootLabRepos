@@ -1,4 +1,253 @@
-.navbutton {
+* {
+	/*border: 1px solid grey;*/
+}
+
+/* Navigation Bars */
+/* Large Nav bar*/
+#largeNav {
+  text-align: center;
+  color: white;
+  padding: 20px 0 0 0;
+  min-width: 400px;
+}
+#largeNav a {
+  background-color: transparent;
+  /*border-color: transparent;*/
+  color: black;
+  text-decoration: none;
+  font-size: 15px;
+  padding: 20px;
+  transition: 0.2s;
+}
+#largeNav a:hover {
+  border-bottom: 10px solid rgb(51, 51, 153);
+  /**/
+}
+/* Side Nav bar (on smaller screens) */
+#sideNav {
+	width: 0%;
+	height: 100%;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: rgba(255, 255, 255, 0.95);
+	overflow-x: hidden;
+	transition: 0.5s;
+	padding: 20px 0;
+}
+#sideNav a {
+	width: 300px;
+	height: 60px;
+	margin: 0 500px 0 20px;
+	display: inline-block;
+
+	padding: 5px;
+
+	text-decoration: none;
+	font-size: 40px;
+	color: #818181;
+	transition: 0.2s;
+}
+#sideNav .closeNav {
+	color: #d4d4d4;
+	width: 50px;
+	/*border-bottom: 5px solid lightgrey;*/
+}
+#sideNav a:hover {
+  color: black;
+  font-weight: bold;
+  border-left: 10px solid black;
+}
+#sideNavOpenButton {
+	font-size: 30pt;
+	cursor: pointer;
+	z-index: 1;
+	position: absolute;
+  padding: 30px;
+}
+
+
+/* Title Screen */
+.titleStatement { /* Blue background */
+	background-color: rgb(51, 51, 153);
+  padding: 50px 0 100px 0;
+  text-align: center;
+  margin: 50px 0;
+}
+.titleStatement h1 { /* Helping make medicine */
+	padding: 20px;
+	font-family: arial;
+	color: white;
+	font-weight: bold;
+	font-size: calc(25px + (80 * 100vw / 1600));
+}
+.titleStatement p { /* Description */
+	color: white;
+	font-size: 15px;
+}
+.titleStatement a { /* Find out more button */
+	background-color: white;
+	border-color: transparent;
+	color: black;
+	font-size: 15px;
+	padding: 10px;
+	transition: 0.5s;
+}
+.titleStatement a:hover {
+	background-color: rgba(255, 255, 255, 0.3);
+	color: white;
+	text-decoration: none;
+}
+
+/* Body Text */
+.genericBody {
+	padding: 30px 80px;
+	vertical-align: top;
+}
+.genericBody img {
+  display: block;
+	width: 90%;
+	margin: 10px auto 20px auto;
+}
+.genericBody h1 {
+	padding: 30px;
+	background-color: rgb(51, 51, 153);
+	color: white;
+}
+.genericBody h2 {
+	font-weight: 1;
+	font-size: 20px;
+}
+
+/* Forms */
+.genericBody label {
+	padding: 30px 0 0 0;
+	/**/
+}
+.genericBody input {
+	outline: thin;
+	width: 200px;
+	padding: 10px;
+	margin: 1px;
+}
+.genericBody input[type=button] {
+	margin: 30px 0 0 0;
+	border-color: transparent;
+	border-radius: 40px;
+	background-color: rgb(240, 240, 240);
+	color: black;
+	transition: 0.2s;
+}
+.genericBody input[type=button]:hover {
+	background-color: rgb(51, 51, 153);
+	color: white;
+}
+.genericBody textarea {
+	padding: 10px;
+	height: 200px;
+	width: 100%;
+	min-width: 200px;
+}
+.genericBody div {
+	padding: 0 30px 0 0;
+	display: inline-block;
+	vertical-align: top;
+}
+.genericBody div.chartsHolder {
+	display: inline-block;
+	width: 100%;
+	min-width: 600px;
+}
+
+
+#contactUs {
+	display: inline-block;
+	width: 50%;
+	height: 600px;
+	padding-right: 50px;
+}
+#map {
+	display: inline-block;
+	padding-left: 0;
+	width: 49%;
+	height: 600px;
+}
+#map iframe {
+	width: 100%;
+	height: 80%;
+}
+
+
+/* Putting images together */
+.imageGallery {
+	text-align: center;
+	/**/
+}
+.imageGallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+	object-position: 20%;
+}
+.imageGallery div.imageContainer {
+	display: inline-block;
+	position: relative;
+	color: white;
+	padding: 5px;
+	height: 370px;
+	width: 370px;
+}
+.imageGallery div.hovertext {
+	display: block;
+	position: absolute;
+	color: transparent;
+	top: 50%;
+	left: 50%;
+	font-size: 16px;
+	padding: 30px;
+	height: 92%;
+	width: 92%;
+	transform: translate(-50%, -50%);
+	vertical-align: middle;
+	background-color: rgba(255, 255, 255, 0);
+	transition-duration: 0.5s;
+	transition-timing-function: ease;
+}
+.imageGallery div.hovertext:hover {
+	color: black;
+	vertical-align: middle;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Footers */
+footer {
+	margin: 100px;
+	padding: 30px 70px;
+}
+
+@media only screen and (max-width: 1099px) {
+	/* Smaller Screen settings */
+	#largeNav a { display: none; }
+
+	.genericBody {
+		padding-left: 5%;
+		padding-right: 5%;
+	}
+
+	#contactUs, #map {
+		padding: 30px 80px;
+		width: 100%;
+	}
+}
+
+@media only screen and (min-width: 1100px) {
+	/* Larger Screen settings */
+	#sideNav, #sideNavOpenButton { display: none; }
+}
+
+
+/* .navbutton {
   background-color: transparent;
   border-color: transparent;
   color: black;
@@ -300,4 +549,4 @@
     font-size: 36px;
     margin-left: 50px;
   }
-}
+} */
