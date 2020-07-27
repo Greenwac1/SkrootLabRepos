@@ -7,21 +7,23 @@
 #largeNav {
   text-align: center;
   color: white;
-  padding: 20px 0 0 0;
-  min-width: 400px;
+  padding: 10pt 0 0 0;
+  min-width: 400pt;
 }
 #largeNav a {
   background-color: transparent;
   /*border-color: transparent;*/
   color: black;
   text-decoration: none;
-  font-size: 15px;
-  padding: 20px;
+  font-size: 12pt;
+  padding: 15pt;
   transition: 0.2s;
 }
 #largeNav a:hover {
-  border-bottom: 10px solid rgb(51, 51, 153);
-  /**/
+  border-bottom: 7pt solid rgb(51, 51, 153);
+}
+#largeNav a.selected {
+  border-bottom: 7pt solid rgb(51, 51, 153);
 }
 /* Side Nav bar (on smaller screens) */
 #sideNav {
@@ -34,64 +36,62 @@
 	background-color: rgba(255, 255, 255, 0.95);
 	overflow-x: hidden;
 	transition: 0.5s;
-	padding: 20px 0;
+	padding: 10pt 0;
 }
 #sideNav a {
-	width: 300px;
-	height: 60px;
-	margin: 0 500px 0 20px;
+	width: 100%;
+	height: 30pt;
+	margin: 0 500pt 0 20pt;
 	display: inline-block;
-
-	padding: 5px;
-
+	padding: 20pt 20pt;
 	text-decoration: none;
-	font-size: 40px;
+	font-size: 30pt;
 	color: #818181;
 	transition: 0.2s;
 }
 #sideNav .closeNav {
 	color: #d4d4d4;
-	width: 50px;
-	/*border-bottom: 5px solid lightgrey;*/
+	width: 50pt;
+	/*border-bottom: 5pt solid lightgrey;*/
 }
 #sideNav a:hover {
   color: black;
   font-weight: bold;
-  border-left: 10px solid black;
+  /* border-left: 10pt solid black; */
 }
 #sideNavOpenButton {
-	font-size: 30pt;
+	font-size: 40pt;
 	cursor: pointer;
 	z-index: 1;
 	position: absolute;
-  padding: 30px;
+  padding: 30pt;
 }
 
 
 /* Title Screen */
 .titleStatement { /* Blue background */
 	background-color: rgb(51, 51, 153);
-  padding: 50px 0 100px 0;
+  padding: 50pt 0 100pt 0;
   text-align: center;
-  margin: 50px 0;
+  margin: 50pt 0;
 }
 .titleStatement h1 { /* Helping make medicine */
-	padding: 20px;
+	padding: 20pt;
 	font-family: arial;
 	color: white;
 	font-weight: bold;
-	font-size: calc(25px + (80 * 100vw / 1600));
+	font-size: calc(25pt + (80 * 100vw / 1600));
 }
 .titleStatement p { /* Description */
 	color: white;
-	font-size: 15px;
+	font-size: 15pt;
 }
 .titleStatement a { /* Find out more button */
 	background-color: white;
 	border-color: transparent;
 	color: black;
-	font-size: 15px;
-	padding: 10px;
+	font-size: 15pt;
+	padding: 10pt;
 	transition: 0.5s;
 }
 .titleStatement a:hover {
@@ -102,39 +102,39 @@
 
 /* Body Text */
 .genericBody {
-	padding: 30px 80px;
+	padding: 30pt 80pt;
 	vertical-align: top;
 }
 .genericBody img {
   display: block;
 	width: 90%;
-	margin: 10px auto 20px auto;
+	margin: 20pt auto 20pt auto;
 }
 .genericBody h1 {
-	padding: 30px;
+	padding: 30pt;
 	background-color: rgb(51, 51, 153);
 	color: white;
 }
 .genericBody h2 {
 	font-weight: 1;
-	font-size: 20px;
+	font-size: 20pt;
 }
 
 /* Forms */
 .genericBody label {
-	padding: 30px 0 0 0;
-	/**/
+  font-size: 15pt;
+	padding: 30pt 0 0 0;
 }
 .genericBody input {
 	outline: thin;
-	width: 200px;
-	padding: 10px;
-	margin: 1px;
+	width: 200pt;
+	padding: 10pt;
+	margin: 1pt;
 }
 .genericBody input[type=button] {
-	margin: 30px 0 0 0;
+	margin: 30pt 0 0 0;
 	border-color: transparent;
-	border-radius: 40px;
+	border-radius: 40pt;
 	background-color: rgb(240, 240, 240);
 	color: black;
 	transition: 0.2s;
@@ -144,34 +144,36 @@
 	color: white;
 }
 .genericBody textarea {
-	padding: 10px;
-	height: 200px;
+	padding: 10pt;
+	height: 200pt;
 	width: 100%;
-	min-width: 200px;
+  max-width: 100%;
+	min-width: 200pt;
+  max-height: 200pt;
 }
 .genericBody div {
-	padding: 0 30px 0 0;
+	padding: 0 30pt 0 0;
 	display: inline-block;
 	vertical-align: top;
 }
 .genericBody div.chartsHolder {
 	display: inline-block;
 	width: 100%;
-	min-width: 600px;
+	min-width: 600pt;
 }
 
 
 #contactUs {
 	display: inline-block;
 	width: 50%;
-	height: 600px;
-	padding-right: 50px;
+	height: 600pt;
+	padding-right: 50pt;
 }
 #map {
 	display: inline-block;
 	padding-left: 0;
 	width: 49%;
-	height: 600px;
+	height: 600pt;
 }
 #map iframe {
 	width: 100%;
@@ -182,7 +184,6 @@
 /* Putting images together */
 .imageGallery {
 	text-align: center;
-	/**/
 }
 .imageGallery img {
   width: 100%;
@@ -194,62 +195,58 @@
 	display: inline-block;
 	position: relative;
 	color: white;
-	padding: 5px;
-	height: 370px;
-	width: 370px;
+	padding: 5pt;
+	height: 300pt;
+	width: 300pt;
 }
 .imageGallery div.hovertext {
-	display: block;
+	display: flex;
 	position: absolute;
 	color: transparent;
 	top: 50%;
 	left: 50%;
-	font-size: 16px;
-	padding: 30px;
+	font-size: 12pt;
+	padding: 30pt;
 	height: 92%;
 	width: 92%;
+
+  justify-content: center;
+  align-items: center;
+
 	transform: translate(-50%, -50%);
-	vertical-align: middle;
 	background-color: rgba(255, 255, 255, 0);
 	transition-duration: 0.5s;
 	transition-timing-function: ease;
 }
 .imageGallery div.hovertext:hover {
 	color: black;
-	vertical-align: middle;
 	background-color: rgba(255, 255, 255, 0.7);
 }
 
 /* Footers */
 footer {
-	margin: 100px;
-	padding: 30px 70px;
+  margin: 5% 10%;
+  padding: 5%;
 }
 
-@media only screen and (min-width: 1100px) {
+@media only screen and (min-width: 900pt) {
 	/* Larger Screen settings */
 	#sideNav, #sideNavOpenButton { display: none; }
 }
 
-@media only screen and (max-width: 1099px) {
+@media only screen and (max-width: 899pt) {
 	/* Smaller Screen settings */
 	#largeNav a { display: none; }
 
-	.genericBody {
+	.genericBody, #map {
 		padding-left: 5%;
 		padding-right: 5%;
 	}
 
 	#contactUs, #map {
-		padding: 30px 80px;
+		/* padding: 30pt 80pt; */
 		width: 100%;
 	}
-}
-
-@media only screen and (max-width: 400px) {
-  #sideNavOpenButton {
-    font-size: 60pt;
-  }
 }
 
 /* .navbutton {

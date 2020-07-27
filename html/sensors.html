@@ -36,7 +36,6 @@
   <a href="sensors.html">Sensors</a>
 </div>
 
-
 <body overflow-y:auto>
   <div id="largeNav">
     <img src="Images/logo.png" alt="SKROOTLAB" />
@@ -45,10 +44,8 @@
     <a href="team.html" role="button">Team</a>
     <a href="news.html" role="button">News</a>
     <a href="contact-us.html" role="button">Contact Us</a>
-    <a href="sensors.html" role="button" style="border-bottom: 10px solid rgb(51, 51, 153)">Sensors</a>
+    <a class="selected" href="sensors.html" role="button">Sensors</a>
   </div>
-
-
 
   <div id="signInView" class="genericBody">
     <h1>Sign In</h1>
@@ -59,13 +56,7 @@
     <input id="logInButton" type="button" value="Log In" onclick="logIn()">
   </div>
 
-
-
-
   <div id="loggedInView" class="genericBody">
-    <div style="text-align: right;">
-      <input id="logOutButton" type="button" value="Log Out" onclick="logOut()"></br>
-    </div>
     <h1>Search For Results</h1>
     <form>
       <div>
@@ -85,7 +76,7 @@
       <p>
         Note: In order to load your data more quickly and efficiently, there is a maximum number of values that are able to be shown on each graph. Each chart could possibly have more values than those shown.
       </p>
-
+      <input id="logOutButton" type="button" value="Log Out" onclick="logOut()"></br>
     </form>
 
     <div id="searchResultsSection" class="chartsHolder"></div>
