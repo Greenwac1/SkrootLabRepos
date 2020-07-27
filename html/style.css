@@ -226,6 +226,11 @@ footer {
 	padding: 30px 70px;
 }
 
+@media only screen and (min-width: 1100px) {
+	/* Larger Screen settings */
+	#sideNav, #sideNavOpenButton { display: none; }
+}
+
 @media only screen and (max-width: 1099px) {
 	/* Smaller Screen settings */
 	#largeNav a { display: none; }
@@ -241,11 +246,11 @@ footer {
 	}
 }
 
-@media only screen and (min-width: 1100px) {
-	/* Larger Screen settings */
-	#sideNav, #sideNavOpenButton { display: none; }
+@media only screen and (max-width: 400px) {
+  #sideNavOpenButton {
+    font-size: 60pt;
+  }
 }
-
 
 /* .navbutton {
   background-color: transparent;
