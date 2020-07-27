@@ -75,7 +75,7 @@
   margin: 50pt 0;
 }
 .titleStatement h1 { /* Helping make medicine */
-	padding: 20pt;
+	padding: 0 5%;
 	font-family: arial;
 	color: white;
 	font-weight: bold;
@@ -84,6 +84,7 @@
 .titleStatement p { /* Description */
 	color: white;
 	font-size: 15pt;
+  padding: 0 5%;
 }
 .titleStatement a { /* Find out more button */
 	background-color: white;
@@ -92,6 +93,7 @@
 	font-size: 15pt;
 	padding: 10pt;
 	transition: 0.5s;
+  white-space: nowrap;
 }
 .titleStatement a:hover {
 	background-color: rgba(255, 255, 255, 0.3);
@@ -206,7 +208,7 @@
 	left: 50%;
 	font-size: 12pt;
 	padding: 30pt;
-	height: 92%;
+	height: 80%;
 	width: 92%;
 
   justify-content: center;
@@ -217,8 +219,10 @@
 	transition-duration: 0.5s;
 	transition-timing-function: ease;
 }
-.imageGallery div.hovertext:hover {
+.imageGallery div.imageContainer:hover > .hovertext {
 	color: black;
+  height: 92%;
+  width: 92%;
 	background-color: rgba(255, 255, 255, 0.7);
 }
 
