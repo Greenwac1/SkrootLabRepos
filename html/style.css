@@ -233,7 +233,7 @@ footer {
 @media only screen and (max-width: 1000px) {
   /* Smaller Screen settings */
   #largeNav a { display: none; }
-  #sideNav, #sideNavOpenButton { display: block; }
+  #sideNav, #sideNavOpenButton, #screenSizeWarning { display: block; }
 
   .genericBody, #map {
     padding-left: 5%;
