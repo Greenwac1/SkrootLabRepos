@@ -236,10 +236,6 @@ footer {
 	#largeNav a { display: none; }
   #sideNav, #sideNavOpenButton { display: block; }
 
-  * {
-    border: 1px solid black;
-  }
-
 	.genericBody, #map {
 		padding-left: 5%;
 		padding-right: 5%;
