@@ -59,11 +59,11 @@
   /* border-left: 10pt solid black; */
 }
 #sideNavOpenButton {
-	font-size: 40pt;
+	font-size: 30pt;
 	cursor: pointer;
 	z-index: 1;
 	position: absolute;
-  padding: 30pt;
+  padding: 20pt;
 }
 
 
