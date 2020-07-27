@@ -1,5 +1,5 @@
 * {
-	/*border: 1px solid grey;*/
+	/* border: 1px solid grey; */
 }
 
 /* Navigation Bars */
@@ -229,14 +229,16 @@ footer {
   padding: 5%;
 }
 
-@media only screen and (min-width: 900pt) {
-	/* Larger Screen settings */
-	#sideNav, #sideNavOpenButton { display: none; }
-}
+#sideNav, #sideNavOpenButton { display: none; }
 
-@media only screen and (max-width: 899pt) {
+@media only screen and (max-width: 479px) {
 	/* Smaller Screen settings */
 	#largeNav a { display: none; }
+  #sideNav, #sideNavOpenButton { display: block; }
+
+  * {
+    border: 1px solid black;
+  }
 
 	.genericBody, #map {
 		padding-left: 5%;
