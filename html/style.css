@@ -231,21 +231,22 @@ footer {
 
 #sideNav, #sideNavOpenButton { display: none; }
 
-@media only screen and (max-width: 479px) {
-	/* Smaller Screen settings */
-	#largeNav a { display: none; }
+@media only screen and (max-width: 1000px) {
+  /* Smaller Screen settings */
+  #largeNav a { display: none; }
   #sideNav, #sideNavOpenButton { display: block; }
 
-	.genericBody, #map {
-		padding-left: 5%;
-		padding-right: 5%;
-	}
+  .genericBody, #map {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
 
-	#contactUs, #map {
-		/* padding: 30pt 80pt; */
-		width: 100%;
-	}
+  #contactUs, #map {
+    /* padding: 30pt 80pt; */
+    width: 100%;
+  }
 }
+
 
 /* .navbutton {
   background-color: transparent;
