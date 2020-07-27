@@ -228,12 +228,12 @@ footer {
   padding: 5%;
 }
 
-#sideNav, #sideNavOpenButton { display: none; }
+#sideNav, #sideNavOpenButton, #screenSizeWarning { display: none; }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 900px) {
   /* Smaller Screen settings */
   #largeNav a { display: none; }
-  #sideNav, #sideNavOpenButton { display: block; }
+  #sideNav, #sideNavOpenButton, #screenSizeWarning { display: block; }
 
   .genericBody, #map {
     padding-left: 5%;
