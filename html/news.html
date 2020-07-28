@@ -1,5 +1,67 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+  <title>Technology</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    function openNav() {
+      document.getElementById("sideNav").style.width = "100%";
+    }
+
+    function closeNav() {
+      document.getElementById("sideNav").style.width = "0";
+    }
+  </script>
+  <meta charset="utf-8">
+</head>
+
+<p id="sideNavOpenButton" onclick="openNav()">&#9776;</p>
+<div id="sideNav">
+  <a href="javascript:void(0)" class="closeNav" onclick="closeNav()">く</a>
+  <a href="home.html">Home</a>
+  <a href="technology.html">Technology</a>
+  <a href="team.html">Team</a>
+  <a href="news.html">News</a>
+  <a href="contact-us.html">Contact Us</a>
+  <a href="sensors.html">Sensors</a>
+</div>
+
+
+<body overflow-y:auto>
+  <div id="largeNav">
+    <img src="Images/logo.png" alt="SKROOTLAB" />
+    <a href="home.html" role="primary">Home</a>
+    <a href="technology.html" role="button">Technology</a>
+    <a href="team.html" role="button">Team</a>
+    <a class="selected" href="news.html" role="button">News</a>
+    <a href="contact-us.html" role="button">Contact Us</a>
+    <a href="sensors.html" role="button">Sensors</a>
+  </div>
+
+  <div class="genericBody">
+    <a href="https://twitter.com/skrootlab?ref_src=twsrc%5Etfw">Tweets by skrootlab</a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  </div>
+
+  <footer>
+    <p>Copyright 2020</p>
+    <a href="https://twitter.com/skrootlab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @skrootlab</a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></br>
+    <a href="mailto:info@skrootlab.com" target="_blank" alt="Mail" class="btn btn-primary" role="button">Email Us</a>
+  </footer>
+</body>
+</html>
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en" dir="ltr">
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <meta charset="utf-8">
@@ -16,32 +78,7 @@
         <a href="sensors.html">Sensors</a>
   </div>
   <style>
-  .navbutton {
-    background-color: transparent;
-    border-color: transparent;
-    color: black;
-    text-decoration: underline;
-    font-size: 15px;
-    padding: 20px;
-  }
-
-  .footer {
-    margin-top: 200px;
-    padding-left: 150px;
-    padding-bottom: 100px;
-    padding-right: 150px;
-  }
-
-  @media only screen and (max-width: 1100px) {
-    .footer {
-      margin-top: 200px;
-      padding-left: 50px;
-      padding-bottom: 100px;
-      padding-right: 150px;
-    }
-
     .navbutton {
-      display: none;
       background-color: transparent;
       border-color: transparent;
       color: black;
@@ -50,101 +87,6 @@
       padding: 20px;
     }
 
-    .logo {
-      padding: 5px;
-      padding-top:5%;
-      padding-left: 33%;
-      float: left;
-      margin: 0 auto;
-    }
-
-    .Visit {
-      margin-top: 10px;
-      font-size: 20px;
-    }
-
-    .Form {
-      width: 100%;
-      height: 50%;
-      float: left;
-      padding-left: 50px;
-      padding-right: 50px;
-      padding-top: 75px;
-    }
-
-    .Questions {
-      font-weight: bold;
-      font-size: 40px;
-    }
-
-    .map {
-      float: left;
-      padding-right: 50px;
-      margin-bottom: 150px;
-      margin-left: 50px;
-      padding-top: 0px;
-      height: 600px;
-      width: 100%;
-    }
-
-    label {
-      padding-bottom: 7px;
-      font-size: 20px;
-    }
-
-    .resp-iframe {
-      position: relative;
-      width: 100%;
-      height: 90%;
-      border: 0;
-    }
-  }
-
-  .sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: rgba(255, 255, 255, 0.95);
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-  }
-
-  .sidenav a {
-    margin-left: 40%;
-    padding-top: 4%;
-    text-decoration: none;
-    font-size: 40px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-  }
-
-  .sidenav a:hover {
-    color: #f1f1f1;
-  }
-
-  .sidenavbutton {
-    font-size: 120px;
-    cursor: pointer;
-    text-align: left;
-    position:absolute;
-    display:block;
-  }
-
-  .sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 90px;
-    margin-left: 50px;
-    margin-right: 50px
-  }
-
-  @media only screen and (min-width: 1200px) {
     .footer {
       margin-top: 200px;
       padding-left: 150px;
@@ -152,19 +94,72 @@
       padding-right: 150px;
     }
 
-    .navbutton {
-      display: block;
-      background-color: transparent;
-      border-color: transparent;
-      color: black;
-      text-decoration: underline;
-      font-size: 15px;
-      padding: 20px;
-    }
+    @media only screen and (max-width: 1100px) {
+      .footer {
+        margin-top: 200px;
+        padding-left: 50px;
+        padding-bottom: 100px;
+        padding-right: 150px;
+      }
 
-    .logo {
-      padding: 5px;
-      float: left;
+      .navbutton {
+        display: none;
+        background-color: transparent;
+        border-color: transparent;
+        color: black;
+        text-decoration: underline;
+        font-size: 15px;
+        padding: 20px;
+      }
+
+      .logo {
+        padding: 5px;
+        padding-top:5%;
+        padding-left: 33%;
+        float: left;
+        margin: 0 auto;
+      }
+
+      .Visit {
+        margin-top: 10px;
+        font-size: 20px;
+      }
+
+      .Form {
+        width: 100%;
+        height: 50%;
+        float: left;
+        padding-left: 50px;
+        padding-right: 50px;
+        padding-top: 75px;
+      }
+
+      .Questions {
+        font-weight: bold;
+        font-size: 40px;
+      }
+
+      .map {
+        float: left;
+        padding-right: 50px;
+        margin-bottom: 150px;
+        margin-left: 50px;
+        padding-top: 0px;
+        height: 600px;
+        width: 100%;
+      }
+
+      label {
+        padding-bottom: 7px;
+        font-size: 20px;
+      }
+
+      .resp-iframe {
+        position: relative;
+        width: 100%;
+        height: 90%;
+        border: 0;
+      }
     }
 
     .sidenav {
@@ -182,7 +177,7 @@
 
     .sidenav a {
       margin-left: 40%;
-      padding-top: 2.5%;
+      padding-top: 4%;
       text-decoration: none;
       font-size: 40px;
       color: #818181;
@@ -195,23 +190,90 @@
     }
 
     .sidenavbutton {
-      font-size: 50px;
+      font-size: 120px;
       cursor: pointer;
       text-align: left;
-      padding-left:8%;
-      padding-top:1%;
       position:absolute;
-      display:none;
+      display:block;
     }
 
     .sidenav .closebtn {
       position: absolute;
       top: 0;
       right: 25px;
-      font-size: 36px;
+      font-size: 90px;
       margin-left: 50px;
+      margin-right: 50px
     }
-  }
+
+    @media only screen and (min-width: 1200px) {
+      .footer {
+        margin-top: 200px;
+        padding-left: 150px;
+        padding-bottom: 100px;
+        padding-right: 150px;
+      }
+
+      .navbutton {
+        display: block;
+        background-color: transparent;
+        border-color: transparent;
+        color: black;
+        text-decoration: underline;
+        font-size: 15px;
+        padding: 20px;
+      }
+
+      .logo {
+        padding: 5px;
+        float: left;
+      }
+
+      .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: rgba(255, 255, 255, 0.95);
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+      }
+
+      .sidenav a {
+        margin-left: 40%;
+        padding-top: 2.5%;
+        text-decoration: none;
+        font-size: 40px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+      }
+
+      .sidenav a:hover {
+        color: #f1f1f1;
+      }
+
+      .sidenavbutton {
+        font-size: 50px;
+        cursor: pointer;
+        text-align: left;
+        padding-left:8%;
+        padding-top:1%;
+        position:absolute;
+        display:none;
+      }
+
+      .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+      }
+    }
   </style>
   <script>
     function openNav() {
@@ -257,4 +319,4 @@
       </div>
     </footer>
   </body>
-</html>
+</html> -->

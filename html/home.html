@@ -2,6 +2,78 @@
 <html lang="en" dir="ltr">
 
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+  <title>Skroot Lab</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    function openNav() {
+      document.getElementById("sideNav").style.width = "100%";
+    }
+
+    function closeNav() {
+      document.getElementById("sideNav").style.width = "0";
+    }
+  </script>
+</head>
+
+<p id="sideNavOpenButton" onclick="openNav()">&#9776;</p>
+<div id="sideNav">
+  <a href="javascript:void(0)" class="closeNav" onclick="closeNav()">く</a>
+  <a href="home.html">Home</a>
+  <a href="technology.html">Technology</a>
+  <a href="team.html">Team</a>
+  <a href="news.html">News</a>
+  <a href="contact-us.html">Contact Us</a>
+  <a href="sensors.html">Sensors</a>
+</div>
+
+<body overflow-y:auto>
+  <div id="largeNav">
+    <img src="Images/logo.png" alt="SKROOTLAB"/>
+    <a class="selected" href="home.html" role="primary">Home</a>
+    <a href="technology.html" role="button">Technology</a>
+    <a href="team.html" role="button">Team</a>
+    <a href="news.html" role="button">News</a>
+    <a href="contact-us.html" role="button">Contact Us</a>
+    <a href="sensors.html" role="button">Sensors</a>
+  </div>
+
+  <div class="titleStatement">
+    <h1>Helping make medicine.</h1></br>
+    <p>Wireless process analytical technologies (PAT) for cell and protein therapy developers.</p></br>
+    <a href="mailto:info@skrootlab.com" target="_blank" alt="Mail" role="button">Find out more</a>
+  </div>
+
+  <div class="genericBody">
+    <h2>
+      '<b>Skroot</b>' = anglicized form of skrót; Polish for 'shortcut.' Faster routes to safer protein and cell therapy products.
+    </h2></br>
+    <h2>
+      '<b>Laboratory</b>' = tech development sandbox; a great place to work.
+    </h2>
+  </div>
+
+  <footer>
+    <p>Copyright 2020</p>
+    <a href="https://twitter.com/skrootlab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @skrootlab</a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></br>
+    <a href="mailto:info@skrootlab.com" target="_blank" alt="Mail" class="btn btn-primary" role="button">Email Us</a>
+  </footer>
+
+</body>
+</html>
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -323,4 +395,4 @@
   </footer>
 </body>
 
-</html>
+</html> -->
