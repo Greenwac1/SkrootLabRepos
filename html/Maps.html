@@ -1,41 +1,65 @@
 <html>
-  <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load("current", {
-        "packages":["map"],
-        // Note: you will need to get a mapsApiKey for your project.
-        // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
-        "mapsApiKey": "AIzaSyBwGKHfxZF4mPS0x-rwqemH09POflPDY-A"
-      });
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Lat', 'Long', 'Name'],
-          [-50.4232, 122.0853, ''],
-          [50.4289, -50.1697, ''],
-          [37.6153, -122.3900, ''],
-          [10.4422, 50.1731, '']
-        ]);
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
 
-        var options = {
-          icons: {
-            default: {
-              normal: 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/Map-Marker-Ball-Azure-icon.png',
-              selected: 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/Map-Marker-Ball-Right-Azure-icon.png'
-            }
-          },
-          zoomLevel : 3
-        };
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
 
-        var map = new google.visualization.Map(document.getElementById('map_markers_div'));
-        map.draw(data, options);
-      }
 
-    </script>
-  </head>
+    AWS.config.region = 'us-east-2'; // Region
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: 'us-east-2:0218d960-7436-4b08-9d8c-f0db9f72ce0f',
+    });
+    var lambda = new AWS.Lambda();
+    var params = {
+      FunctionName: "arn:aws:lambda:us-east-2:509274927962:function:GetStartedLambdaProxyIntegration",
+      Payload: '',
+    };
+    const promise = new Promise((resolve, reject) => {
+    lambda.invoke(params, function(err, data) {
+      if (err) console.log(err, err.stack); // an error occurred
+      else console.log(data); // successful response
+      var latLon = data["Payload"]
+      console.log(latLon)
+      resolve(latLon)
+    });
+  }).then(function(result) {
+    google.charts.load("current", {
+      "packages": ["map"],
+      // Note: you will need to get a mapsApiKey for your project.
+      // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+      "mapsApiKey": "AIzaSyCeN7kHeC-ji4udGOyDPQbEkzMhzyhcUbo"
+    });
+    google.charts.setOnLoadCallback(drawChart);
+    var params = [['Lat', 'Long', 'Name']]
+    var parsed = JSON.parse(result)
+    console.log(result)
+    for (i = 0; i < parsed.length; i++) {
+      params.push([parsed[i]['lat'], parsed[i]['lng'], ''])
+    }
+    console.log(params)
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable(params);
 
-  <body>
-    <div id="map_markers_div" style="width: 100%; height: 100%"></div>
-  </body>
+      var options = {
+        icons: {
+          default: {
+            normal: 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/Map-Marker-Ball-Azure-icon.png',
+            selected: 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/Map-Marker-Ball-Right-Azure-icon.png'
+          }
+        },
+        zoomLevel: 3
+      };
+
+      var map = new google.visualization.Map(document.getElementById('map_markers_div'));
+      map.draw(data, options);
+    }
+    })
+  </script>
+</head>
+
+<body>
+  <div id="map_markers_div" style="width: 100%; height: 100%"></div>
+</body>
+
 </html>
