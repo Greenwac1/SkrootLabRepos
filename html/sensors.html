@@ -53,8 +53,25 @@
     <p>Enter your Skroot Credentials to access your sensors' data.</p>
     <input id="usernameInput" type="text" placeholder="Username"/></br>
     <input id="passwordInput" type="password" placeholder="Password"/></br>
-
     <input id="logInButton" type="button" value="Log In" onclick="logIn()">
+    <input id="recoverPasswordButton" type="button" value="Recover Password" onclick="switchToRecoverPasswordView()">
+  </div>
+
+  <div id="forgotPasswordView" class="genericBody">
+    <h1>Password Recovery</h1>
+    <p>Enter your username to receive a recovery email.</p>
+    <input id="usernameRecoveryInput" type="text" placeholder="Username"/></br>
+    <input id="recoverPasswordButton" type="button" value="Recover Password" onclick="recoverPassword()">
+    <input id="logInButton" type="button" value="Cancel" onclick="switchToSignInView()">
+  </div>
+
+  <div id="verificationView" class="genericBody">
+    <h1>Password Recovery</h1>
+    <p>Please enter the verification code emailed to you along with your new password.</p>
+    <input id="verificationCodeInput" type="text" placeholder="Verification Code"/></br>
+    <input id="newPasswordInput"  type="text" placeholder="New Password"/></br>
+    <input id="submitButton" type="button" value="Submit" onclick="confirmPassword()">
+    <input id="logInButton" type="button" value="Cancel" onclick="switchToSignInView()">
   </div>
 
   <div id="loggedInView" class="genericBody">

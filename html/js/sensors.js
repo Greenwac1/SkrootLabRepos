@@ -61,11 +61,17 @@ function hideAll() {
   $("#verificationView").hide();
   $("#signInView").hide();
   $("#loggedInView").hide();
+  $("#forgotPasswordView").hide();
 }
 
 function switchToSignInView() {
   hideAll();
   $("#signInView").show();
+}
+
+function switchToRecoverPasswordView() {
+  hideAll();
+  $("#forgotPasswordView").show();
 }
 
 function switchToLoggedInView() {
@@ -74,6 +80,52 @@ function switchToLoggedInView() {
   // var element = document.getElementById("head");
   // element.innerHTML = "All Results"
   docClient = new AWS.DynamoDB.DocumentClient();
+}
+
+function recoverPassword() {
+  hideAll();
+  $("#verificationView").show();
+  params = {
+    "ClientId": clientId,
+    "Username": $('#usernameRecoveryInput').val(),
+  }
+  userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+  console.log(userPool)
+  cognitoUser = new AmazonCognitoIdentity.CognitoUser({
+    Username: $('#usernameRecoveryInput').val(),
+    Pool: userPool
+  });
+  console.log(cognitoUser)
+  cognitoUser.forgotPassword({
+    onSuccess: function(result) {
+      console.log(result)
+    },
+    onFailure: function(err) {
+      alert(err);
+    },
+  })
+}
+
+function confirmPassword(verificationCode, newPassword) {
+  switchToSignInView()
+  userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+  cognitoUser = new AmazonCognitoIdentity.CognitoUser({
+    Username: $('#usernameRecoveryInput').val(),
+    Pool: userPool
+  });
+  return new Promise((resolve, reject) => {
+    verificationCode = $('#verificationCodeInput').val(),
+    newPassword = $('#newPasswordInput').val(),
+      cognitoUser.confirmPassword(verificationCode, newPassword, {
+        onFailure(err) {
+          console.log(err)
+          reject(err);
+        },
+        onSuccess() {
+          resolve();
+        },
+      });
+  });
 }
 
 /// LOG IN AND OUT ///
