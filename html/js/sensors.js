@@ -90,14 +90,13 @@ function recoverPassword() {
     "Username": $('#usernameRecoveryInput').val(),
   }
   userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-  console.log(userPool)
   cognitoUser = new AmazonCognitoIdentity.CognitoUser({
     Username: $('#usernameRecoveryInput').val(),
     Pool: userPool
   });
-  console.log(cognitoUser)
   cognitoUser.forgotPassword({
     onSuccess: function(result) {
+      console.log('call result: ' + result);
       console.log(result)
     },
     onFailure: function(err) {
@@ -115,7 +114,7 @@ function confirmPassword(verificationCode, newPassword) {
   });
   return new Promise((resolve, reject) => {
     verificationCode = $('#verificationCodeInput').val(),
-    newPassword = $('#newPasswordInput').val(),
+      newPassword = $('#newPasswordInput').val(),
       cognitoUser.confirmPassword(verificationCode, newPassword, {
         onFailure(err) {
           console.log(err)
