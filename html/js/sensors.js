@@ -4,7 +4,54 @@ Based partially off code designed and written by Suminda De Silva
 Rewritten by Adam Rice and Cameron Greenwalt - Skroot Labs Inc.
 */
 
+/// ************ Press button when enter is pressed *************** ///
+var input = document.getElementById("passwordInput");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("logInButton").click();
+  }
+});
 
+var input = document.getElementById("startTimeInput");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("accessDataButton").click();
+  }
+});
+
+var input = document.getElementById("stopTimeInput");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("accessDataButton").click();
+  }
+});
+
+var input = document.getElementById("sensorIdInput");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("accessDataButton").click();
+  }
+});
+
+var input = document.getElementById("usernameRecoveryInput");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("recoverPasswordButton").click();
+  }
+});
+
+var input = document.getElementById("newPasswordInput");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("submitButton").click();
+  }
+});
 /// ************ VARIABLES ************ ///
 
 // AWS IDs
@@ -100,13 +147,12 @@ function recoverPassword() {
       console.log(result)
     },
     onFailure: function(err) {
-      alert(err);
+      alert(err.message);
     },
   })
 }
 
 function confirmPassword(verificationCode, newPassword) {
-  switchToSignInView()
   userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
   cognitoUser = new AmazonCognitoIdentity.CognitoUser({
     Username: $('#usernameRecoveryInput').val(),
@@ -117,10 +163,12 @@ function confirmPassword(verificationCode, newPassword) {
       newPassword = $('#newPasswordInput').val(),
       cognitoUser.confirmPassword(verificationCode, newPassword, {
         onFailure(err) {
+          alert(err.message)
           console.log(err)
           reject(err);
         },
         onSuccess() {
+          switchToSignInView()
           resolve();
         },
       });
@@ -168,6 +216,7 @@ function logIn() {
       },
 
       onFailure: function(err) {
+        alert(err.message)
         tellUser(err.message);
       },
 
