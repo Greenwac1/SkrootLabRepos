@@ -41,7 +41,7 @@ var input = document.getElementById("usernameRecoveryInput");
 input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
    event.preventDefault();
-   document.getElementById("recoverPasswordButton").click();
+   document.getElementById("recoverPasswordButto").click();
   }
 });
 
@@ -78,7 +78,7 @@ var maximumChartValues = 300;
 
 // all results are accessed between earliestTime and latestTime
 var earliestTime = getEpochMillis('2020-07-08 00:00:00 UTC');
-var latestTime = getEpochMillis('2020-09-10 00:00:00 UTC');
+var latestTime = getEpochMillis('2022-09-10 00:00:00 UTC');
 var nextCanvasId = 0;
 
 var chartsBeingLoaded;
@@ -357,7 +357,7 @@ function queryAndChart(startTime, stopTime, sensorID, storageArray, insertionPoi
       // tracks when the charts have been loaded, shows the search button again once all charts are finished
       chartsBeingLoaded = data["Items"].length;
       loadTrackingNumber = 0;
-      $("#accessDataButton").hide();
+      // $("#accessDataButton").hide();
 
       // goes through all the data tables, charts each table
       for (var i = 0; i <= data["Items"].length - 1; i++) {
@@ -384,6 +384,7 @@ function queryAndChartData(tableName, sensorID, date, storageArray, insertionPoi
   docClient.scan(params, function(err, data) {
     if (err) {
       console.log("Unable to find the data!");
+      chartsBeingLoaded--;
     } else {
       // refining and charting the data //
 
@@ -495,6 +496,8 @@ function queryAndChartData(tableName, sensorID, date, storageArray, insertionPoi
 // if this is the last chart in the scan that was loaded, the search button is shown.
 function finishedLoadingChart() {
   loadTrackingNumber++;
+  console.log(loadTrackingNumber)
+  console.log(chartsBeingLoaded)
   if (loadTrackingNumber >= chartsBeingLoaded) {
     $("#accessDataButton").show();
   }
