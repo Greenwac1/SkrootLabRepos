@@ -418,7 +418,6 @@ function queryAndChartData(tableName, sensorID, date, storageArray, insertionPoi
   var params = {
     TableName: tableName
   };
-  console.log(params);
 
   docClient.scan(params, function(err, data) {
     if (err) {
@@ -535,8 +534,6 @@ function queryAndChartData(tableName, sensorID, date, storageArray, insertionPoi
 // if this is the last chart in the scan that was loaded, the search button is shown.
 function finishedLoadingChart() {
   loadTrackingNumber++;
-  console.log(loadTrackingNumber)
-  console.log(chartsBeingLoaded)
   if (loadTrackingNumber >= chartsBeingLoaded) {
     $("#accessDataButton").show();
   }

@@ -130,10 +130,10 @@
 	outline: thin;
 	width: 200pt;
 	padding: 10pt;
-	margin: 1pt;
+	margin: 5pt;
 }
 .genericBody input[type=button] {
-	margin: 30pt 0 0 0;
+	margin: 20pt 0 0 0;
 	border-color: transparent;
 	border-radius: 40pt;
 	background-color: rgb(240, 240, 240);
@@ -151,6 +151,16 @@
   max-width: 100%;
 	min-width: 200pt;
   max-height: 200pt;
+}
+.genericBody input[type=text] {
+  border-color: white rgb(170,170,170) rgb(170,170,170) white;
+  text-align:center;
+	border-radius:20px;
+}
+.genericBody input[type=password] {
+  border-color: white rgb(170,170,170) rgb(170,170,170) white;
+  text-align:center;
+	border-radius:20px;
 }
 .genericBody div {
 	padding: 0 30pt 0 0;
