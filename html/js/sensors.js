@@ -13,6 +13,24 @@ input.addEventListener("keyup", function(event) {
   }
 });
 
+function passwordToggle() {
+  var x = document.getElementById("passwordInput");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+
+function newPasswordToggle() {
+  var x = document.getElementById("passwordInput");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+
 var input = document.getElementById("startTimeInput");
 input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
@@ -41,7 +59,7 @@ var input = document.getElementById("usernameRecoveryInput");
 input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
     event.preventDefault();
-    document.getElementById("recoverPasswordButto").click();
+    document.getElementById("recoverPasswordButton").click();
   }
 });
 
