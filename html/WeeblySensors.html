@@ -364,6 +364,37 @@
   <input id="submitButton" type="button" value="Submit" onclick="confirmPassword()">
   <input id="logInButton" type="button" value="Cancel" onclick="switchToSignInView()">
 </div>
+
+<div id="loggedInView" class="genericBody">
+  <h1>Search For Results</h1>
+  <p id="screenSizeWarning"><span style="color: red">*</span>Charts may be easier to see on a larger screen.</p>
+  <form>
+    <div>
+      <label for="sensorIdInput" class="required-field">Reader ID</label></br>
+      <input id="sensorIdInput" type="text" name="SensorID" placeholder="12BE34" />
+    </div>
+    <div>
+      <label for="startTimeInput">Start Date</label></br>
+      <input id="startTimeInput" type="text" placeholder="yyyy-mm-dd" />
+    </div>
+    <div>
+      <label for="stopTimeInput">Stop Date</label></br>
+      <input id="stopTimeInput" type="text" placeholder="yyyy-mm-dd" />
+    </div>
+
+    <p>
+      Note: In order to load your data more efficiently, there is a maximum number of values that will be shown on each chart. There may be more values than those shown.
+    </p>
+    <input id="accessDataButton" type="button" value="Search" onclick="accessData()">
+    <input id="logOutButton" type="button" value="Log Out" onclick="logOut()"></br>
+  </form>
+
+  <div id="searchResultsSection" class="chartsHolder"></div>
+
+  <h1>All Results</h1>
+  <div id="allResultsSection" class="chartsHolder"></div>
+
+</div>
 <script>
   /*
   Based partially off code designed and written by Suminda De Silva
@@ -953,38 +984,6 @@
     return (m) ? Date.UTC(m[1], m[2] - 1, m[3], m[4], m[5], m[6]) / 1000 : undefined;
   };
 </script>
-
-<div id="loggedInView" class="genericBody">
-  <h1>Search For Results</h1>
-  <p id="screenSizeWarning"><span style="color: red">*</span>Charts may be easier to see on a larger screen.</p>
-  <form>
-    <div>
-      <label for="sensorIdInput" class="required-field">Reader ID</label></br>
-      <input id="sensorIdInput" type="text" name="SensorID" placeholder="12BE34" />
-    </div>
-    <div>
-      <label for="startTimeInput">Start Date</label></br>
-      <input id="startTimeInput" type="text" placeholder="yyyy-mm-dd" />
-    </div>
-    <div>
-      <label for="stopTimeInput">Stop Date</label></br>
-      <input id="stopTimeInput" type="text" placeholder="yyyy-mm-dd" />
-    </div>
-
-    <p>
-      Note: In order to load your data more efficiently, there is a maximum number of values that will be shown on each chart. There may be more values than those shown.
-    </p>
-    <input id="accessDataButton" type="button" value="Search" onclick="accessData()">
-    <input id="logOutButton" type="button" value="Log Out" onclick="logOut()"></br>
-  </form>
-
-  <div id="searchResultsSection" class="chartsHolder"></div>
-
-  <h1>All Results</h1>
-  <div id="allResultsSection" class="chartsHolder"></div>
-
-</div>
-
 </body>
 
 </html>
