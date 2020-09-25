@@ -124,7 +124,7 @@
 /* Forms */
 .genericBody label {
   font-size: 15pt;
-	padding: 30pt 0 0 0;
+	padding: 30pt 0 0 10pt;
 }
 .genericBody input {
 	outline: thin;
