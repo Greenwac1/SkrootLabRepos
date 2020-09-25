@@ -8,48 +8,48 @@ Rewritten by Adam Rice and Cameron Greenwalt - Skroot Labs Inc.
 var input = document.getElementById("passwordInput");
 input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
-   event.preventDefault();
-   document.getElementById("logInButton").click();
+    event.preventDefault();
+    document.getElementById("logInButton").click();
   }
 });
 
 var input = document.getElementById("startTimeInput");
 input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
-   event.preventDefault();
-   document.getElementById("accessDataButton").click();
+    event.preventDefault();
+    document.getElementById("accessDataButton").click();
   }
 });
 
 var input = document.getElementById("stopTimeInput");
 input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
-   event.preventDefault();
-   document.getElementById("accessDataButton").click();
+    event.preventDefault();
+    document.getElementById("accessDataButton").click();
   }
 });
 
 var input = document.getElementById("sensorIdInput");
 input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
-   event.preventDefault();
-   document.getElementById("accessDataButton").click();
+    event.preventDefault();
+    document.getElementById("accessDataButton").click();
   }
 });
 
 var input = document.getElementById("usernameRecoveryInput");
 input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
-   event.preventDefault();
-   document.getElementById("recoverPasswordButto").click();
+    event.preventDefault();
+    document.getElementById("recoverPasswordButto").click();
   }
 });
 
 var input = document.getElementById("newPasswordInput");
 input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
-   event.preventDefault();
-   document.getElementById("submitButton").click();
+    event.preventDefault();
+    document.getElementById("submitButton").click();
   }
 });
 /// ************ VARIABLES ************ ///
@@ -109,11 +109,17 @@ function hideAll() {
   $("#signInView").hide();
   $("#loggedInView").hide();
   $("#forgotPasswordView").hide();
+  $("#firstSignInView").hide();
 }
 
 function switchToSignInView() {
   hideAll();
   $("#signInView").show();
+}
+
+function switchToFirstSignInView() {
+  hideAll();
+  $("#firstSignInView").show();
 }
 
 function switchToRecoverPasswordView() {
@@ -220,8 +226,23 @@ function logIn() {
         tellUser(err.message);
       },
 
+      newPasswordRequired: userattr => {
+        var isFirstLogin = true
+        var userAttr = userAttr
+        const newPassword = $("#passwordInput").val()
+        cognitoUser.completeNewPasswordChallenge(newPassword, userAttr, {
+          onSuccess: result => {
+            console.log('success!')
+            switchToLoggedInView()
+          },
+          onFailure: function(err) {
+            alert(err.message)
+            console.log(err.message)
+          }
+        });
+      }
     });
-  }
+  };
 }
 
 // If user has logged in before, get the previous session so user doesn't need to log in again.

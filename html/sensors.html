@@ -74,6 +74,15 @@
     <input id="logInButton" type="button" value="Cancel" onclick="switchToSignInView()">
   </div>
 
+  <div id="firstSignInView" class="genericBody">
+    <h1>First Sign In</h1>
+    <p>Please enter a new password.</p>
+    <input id="newPasswordInput" type="text" placeholder="New Password"/></br>
+    <input id="confirmFirstPasswordInput"  type="text" placeholder="Confirm New Password"/></br>
+    <input id="submitButton" type="button" value="Submit" onclick="changePassword()">
+    <input id="logInButton" type="button" value="Cancel" onclick="switchToSignInView()">
+  </div>
+
   <div id="loggedInView" class="genericBody">
     <h1>Search For Results</h1>
     <p id="screenSizeWarning"><span style="color: red">*</span>Charts may be easier to see on a larger screen.</p>
